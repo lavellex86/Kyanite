@@ -1,7 +1,5 @@
 # API Reference - KyaniteExpression
 
-# KyaniteExpression
-
 ```csharp
 public abstract record KyaniteExpression
 ```
@@ -10,7 +8,7 @@ Represents a mathematical expression.
 
 ***
 
-## Operators
+### Operators
 
 ```csharp
 public static KyaniteExpression operator +(KyaniteExpression a, KyaniteExpression b)
@@ -52,7 +50,7 @@ Negates an expression.
 
 ***
 
-## Methods
+### Methods
 
 ```csharp
 public KyaniteExpression Pow(KyaniteExpression e)
@@ -118,7 +116,7 @@ Converts a `string` to a `Variable`.
 
 ***
 
-## Extension Methods
+### Extension Methods
 
 ```csharp
 public static KyaniteExpression D(this KyaniteExpression expression, Variable x, bool partial = false)
