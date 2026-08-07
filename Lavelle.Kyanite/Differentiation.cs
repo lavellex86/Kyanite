@@ -16,7 +16,7 @@ namespace Lavelle.Kyanite
         /// </summary>
         public static KyaniteExpression D(this KyaniteExpression expression, Variable x, bool partial = false)
         {
-            var d = expression switch
+            KyaniteExpression d = expression switch
             {
                 Number _ => new Number(0),
                 Variable v when v == x => new Number(1),
