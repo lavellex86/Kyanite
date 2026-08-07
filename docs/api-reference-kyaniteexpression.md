@@ -153,14 +153,6 @@ Substitutes expressions in for variables in an expression.
 ***
 
 ```csharp
-public static KyaniteExpression DSub(this KyaniteExpression expression, Dictionary<Derivative, KyaniteExpression> env)
-```
-
-Substitutes expressions in for derivatives in an expression.
-
-***
-
-```csharp
 public static double Eval(this KyaniteExpression expression)
 ```
 
@@ -189,3 +181,11 @@ public static string ToLaTeX(this KyaniteExpression expression, int pred = 0)
 ```
 
 Outputs the expression tree to LaTeX format.
+
+***
+
+```csharp
+public static KyaniteExpression ESub(this KyaniteExpression expression, Dictionary<KyaniteExpression, KyaniteExpression> env)
+```
+
+Subsitutes an expression in for another expresion.
