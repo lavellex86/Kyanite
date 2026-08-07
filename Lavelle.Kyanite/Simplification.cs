@@ -8,9 +8,14 @@ namespace Lavelle.Kyanite
 {
     public partial class KyaniteExtensions
     {
+        /// <summary>
+        /// Simplifies an expression.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
         public static KyaniteExpression Simplify(this KyaniteExpression expression)
         {
-            var simplified1 = expression switch
+            var simplified = expression switch
             {
                 Add(var a, var b) => a.Simplify() + b.Simplify(),
                 Multiply(var a, var b) => a.Simplify() * b.Simplify(),
@@ -24,7 +29,7 @@ namespace Lavelle.Kyanite
                 var x => x
             };
 
-            var simplified2 = simplified1 switch
+            simplified = simplified switch
             {
                 Add(Number(0), var x) => x,
                 Add(var x, Number(0)) => x,
@@ -53,11 +58,85 @@ namespace Lavelle.Kyanite
                 var x => x
             };
 
+            simplified = CollectAdd(simplified);
+
             // TODO: term collection, polynomials
             // TODO: trig
 
-            return simplified2;
+            return simplified;
         }
 
+        #region Flattens
+        private static List<KyaniteExpression> FlattenAdd(KyaniteExpression expression)
+        {
+            if (expression is not Add) return [];
+            var terms = new List<KyaniteExpression>();
+            var stack = new Stack<KyaniteExpression>([expression]);
+            
+            while (stack.Count > 0)
+            {
+                var term = stack.Pop();
+                if (term is Add add) { stack.Push(add.A); stack.Push(add.B); }
+                else terms.Add(term);
+            }
+
+            return terms;
+        }
+        private static List<KyaniteExpression> FlattenMultiply(KyaniteExpression expression)
+        {
+            if (expression is not Multiply) return [];
+            var terms = new List<KyaniteExpression>();
+            var stack = new Stack<KyaniteExpression>([expression]);
+
+            while (stack.Count > 0)
+            {
+                var term = stack.Pop();
+                if (term is Multiply multiply) { stack.Push(multiply.A); stack.Push(multiply.B); }
+                else terms.Add(term);
+            }
+
+            return terms;
+        }
+
+        private static KyaniteExpression RebuildAdd(List<KyaniteExpression> terms)
+        {
+            KyaniteExpression expression = 0;
+            foreach (var term in terms) expression += term;
+            return expression;
+        }
+        private static KyaniteExpression RebuildMultiply(List<KyaniteExpression> terms)
+        {
+            KyaniteExpression expression = 1;
+            foreach (var term in terms) expression *= term;
+            return expression;
+        }
+        #endregion
+
+        private static KyaniteExpression CollectAdd(this KyaniteExpression expression)
+        {
+            if (expression is not Add) return expression;
+            var flattened = FlattenAdd(expression);
+            var coeffs = new Dictionary<KyaniteExpression, KyaniteExpression>();
+
+            foreach (var term in flattened)
+            {
+                if (term is Multiply multiply)
+                {
+                    var flattenedMultiply = FlattenMultiply(multiply);
+                    foreach (var factor in flattenedMultiply)
+                    {
+                        if (coeffs.ContainsKey(factor))
+                        {
+                            flattenedMultiply.Remove(factor);
+                            coeffs[factor] += RebuildMultiply(flattenedMultiply);
+                        }
+                    }
+                }
+            }
+
+            var result = new List<KyaniteExpression>();
+            foreach (var (coeff, term) in coeffs) result.Add(coeff * term);
+            return RebuildAdd(result);
+        }
     }
 }

@@ -1,7 +1,11 @@
 ﻿using Lavelle.Kyanite;
-using static Lavelle.Kyanite.KMath;
 
-var ex = 1 + 2 * Sin(2 * V("x") + 3 * V("x").Power(2));
-Console.WriteLine(ex.ToLaTeX());
-var dex = ex.D("x").Simplify();
-Console.WriteLine(dex.ToLaTeX());
+Variable x0 = KMath.C("x_0"), v0 = KMath.C("v_0"), g = KMath.C("g"), t = KMath.V("t");
+var x = x0 + v0 * t + 0.5 * g * t.Power(2);
+Console.WriteLine(x.ToLaTeX());
+
+var v = x.D(t);
+Console.WriteLine(v.ToLaTeX());
+
+var a = v.D(t);
+Console.WriteLine(a.ToLaTeX());

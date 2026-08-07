@@ -7,10 +7,13 @@ namespace Lavelle.Kyanite
 {
     public partial class KyaniteExtensions
     {
+        /// <summary>
+        /// Outputs the expression tree to LaTeX format.
+        /// </summary>
         public static string ToLaTeX(this KyaniteExpression expression, int pred = 0) => expression switch
         {
             Number(var x) => x.ToString("G6"),
-            Variable(var x) => EscapeVariable(x),
+            Variable(var x, var _) => EscapeVariable(x),
 
             Add(var a, var b) when Negated(b, out var trueB) => P($"{a.ToLaTeX(1)} - {b.ToLaTeX(1)}", pred > 1),
             Add(var a, var b) => P($"{a.ToLaTeX(1)} + {b.ToLaTeX(1)}", pred > 1),
@@ -18,9 +21,9 @@ namespace Lavelle.Kyanite
             Multiply(var a, Power(var b, Number(-1))) => $@"\frac{{ {a.ToLaTeX(0)} }}{{ {b.ToLaTeX(0)} }}",
             Multiply(var x, Number(-1)) => P($"-{x.ToLaTeX(3)}", pred > 3),
             Multiply(Number(-1) , var x) => P($"-{x.ToLaTeX(3)}", pred > 3),
-            Multiply(var a, Number(var b)) => P($"{N(b)}{a.ToLaTeX(2)}", pred > 2),
-            Multiply(Number(var a), var b) => P($"{N(a)}{b.ToLaTeX(2)}", pred > 2),
-            Multiply(var a, var b) => P($"{a.ToLaTeX(2)} {b.ToLaTeX(2)}", pred > 2),
+            Multiply(var a, Number(var b)) => P($@"{N(b)} {a.ToLaTeX(2)}", pred > 2),
+            Multiply(Number(var a), var b) => P($@"{N(a)} {b.ToLaTeX(2)}", pred > 2),
+            Multiply(var a, var b) => P($@"{a.ToLaTeX(2)} {b.ToLaTeX(2)}", pred > 2),
 
             Power(var x, Number(var e)) when e == 0.5 => $@"\sqrt{{ {x.ToLaTeX(0)} }}",
             Power(var x, Number(var e)) when e < 0 => $@"\frac{{ 1 }}{{ {P(x)}^{{ {N(e)} }} }}",
@@ -28,8 +31,8 @@ namespace Lavelle.Kyanite
             Sin(var x) => $@"\sin \left( {x.ToLaTeX(0)} \right)",
             Cos(var x) => $@"\cos \left( {x.ToLaTeX(0)} \right)",
             Tan(var x) => $@"\tan \left( {x.ToLaTeX(0)} \right)",
-            Log(var x, Variable("e")) => $@"\ln \left( {x.ToLaTeX(0)} \right)",
-            Log(var x, var b) => $@"\log_{{ {x.ToLaTeX(0)} }} \left( {x.ToLaTeX(0)} \right)",
+            Log(var x, Variable("e", true)) => $@"\ln \left( {x.ToLaTeX(0)} \right)",
+            Log(var x, var b) => $@"\log_{{ {b.ToLaTeX(0)} }} \left( {x.ToLaTeX(0)} \right)",
 
             Derivative(var f, var x) => $@"\frac{{ d{f.ToLaTeX(0)} }}{{ d{x.ToLaTeX(0)} }}",
 

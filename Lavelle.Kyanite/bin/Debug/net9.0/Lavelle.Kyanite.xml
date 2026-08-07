@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lavelle.Kyanite</name>
+    </assembly>
+    <members>
+        <member name="T:Lavelle.Kyanite.KyaniteExtensions">
+            <summary>
+            Extensions for `KyaniteExpression`.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExtensions.D(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.Variable,System.Boolean)">
+            <summary>
+            Takes the derivative of <paramref name="expression"/> w.r.t <paramref name="x"/>.
+            Takes the partial derivative if <paramref name="partial"/> is true.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExtensions.PD(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.Variable)">
+            <summary>
+            Takes the partial derivative of <paramref name="expression"/> w.r.t <paramref name="x"/>.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExtensions.ToLaTeX(Lavelle.Kyanite.KyaniteExpression,System.Int32)">
+            <summary>
+            Outputs the expression tree to LaTeX format.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExtensions.Simplify(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Simplifies an expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExtensions.Sub(Lavelle.Kyanite.KyaniteExpression,System.Collections.Generic.Dictionary{Lavelle.Kyanite.Variable,Lavelle.Kyanite.KyaniteExpression})">
+            <summary>
+            Subsitutes expressions in for variables in an expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExtensions.Eval(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Numerically evaluates an expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExtensions.At(Lavelle.Kyanite.KyaniteExpression,System.Collections.Generic.Dictionary{System.String,System.Double})">
+            <summary>
+            Numerically evaluates an expression for a given set of variable values.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.KMath">
+            <summary>
+            Math utilities for Kyanite.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KMath.N(System.Double)">
+            <summary>
+            Creates a new `Number` expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KMath.V(System.String)">
+            <summary>
+            Creates a new `Variable` expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KMath.C(System.String)">
+            <summary>
+            Creates a new constant `Variable` expression.
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lavelle.Kyanite.KMath.Sin(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Creates a new `Sin` expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KMath.Cos(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Creates a new `Cos` expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KMath.Tan(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Creates a new `Tan` expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KMath.Log(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Creates a new `Log` expression.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.KyaniteExpression">
+            <summary>
+            Represents a mathematical expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.op_Addition(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Adds two expressions.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.op_Subtraction(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Subtracts two expressions.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.op_Multiply(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Multiplies two expressions.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.op_Division(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Divides two expressions.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.op_UnaryNegation(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Negates an expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.Power(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Raises the expression to an exponent.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.Sin">
+            <summary>
+            Takes the sine of the expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.Cos">
+            <summary>
+            Takes the cosine of the expression.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.Tan">
+            <summary>
+            Takes the tangent of the expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.Sec">
+            <summary>
+            Takes the secant of the expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.Log(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Takes the logarithm of the expression.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.op_Implicit(System.Double)~Lavelle.Kyanite.KyaniteExpression">
+            <summary>
+            Converts a `double` to a `Number`.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.KyaniteExpression.op_Implicit(System.String)~Lavelle.Kyanite.KyaniteExpression">
+            <summary>
+            Converts a `string` to a `Variable`.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Number">
+            <summary>
+            Represents a numerical value.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Number.#ctor(System.Double)">
+            <summary>
+            Represents a numerical value.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Number.op_Implicit(System.Double)~Lavelle.Kyanite.Number">
+            <summary>
+            Converts a `double` to a `Number`.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Variable">
+            <summary>
+            Represents a variable.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Variable.#ctor(System.String,System.Boolean)">
+            <summary>
+            Represents a variable.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Variable.op_Implicit(System.String)~Lavelle.Kyanite.Variable">
+            <summary>
+            Converts a `string` to a `Variable`.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Add">
+            <summary>
+            Represents a sum.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Add.#ctor(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Represents a sum.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Multiply">
+            <summary>
+            Represents a product.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Multiply.#ctor(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Represents a product.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Power">
+            <summary>
+            Represents an exponentiation operaton.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Power.#ctor(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Represents an exponentiation operaton.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Sin">
+            <summary>
+            Represents a sine operation.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Sin.#ctor(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Represents a sine operation.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Cos">
+            <summary>
+            Represents a cosine operation.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Cos.#ctor(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Represents a cosine operation.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Tan">
+            <summary>
+            Represents a tangent operation.
+            </summary>
+            <param name="X"></param>
+        </member>
+        <member name="M:Lavelle.Kyanite.Tan.#ctor(Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Represents a tangent operation.
+            </summary>
+            <param name="X"></param>
+        </member>
+        <member name="P:Lavelle.Kyanite.Tan.X">
+            <summary></summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Log">
+            <summary>
+            Represents a logarithm operation.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Log.#ctor(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.KyaniteExpression)">
+            <summary>
+            Represents a logarithm operation.
+            </summary>
+        </member>
+        <member name="T:Lavelle.Kyanite.Derivative">
+            <summary>
+            Represents a derivative operation.
+            </summary>
+        </member>
+        <member name="M:Lavelle.Kyanite.Derivative.#ctor(Lavelle.Kyanite.KyaniteExpression,Lavelle.Kyanite.Variable)">
+            <summary>
+            Represents a derivative operation.
+            </summary>
+        </member>
+    </members>
+</doc>

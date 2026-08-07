@@ -2,6 +2,9 @@
 {
     public static partial class KyaniteExtensions
     {
+        /// <summary>
+        /// Subsitutes expressions in for variables in an expression.
+        /// </summary>
         public static KyaniteExpression Sub(this KyaniteExpression expression, Dictionary<Variable, KyaniteExpression> env) => expression switch
         {
             Variable x when env.ContainsKey(x) => env[x],
@@ -15,16 +18,19 @@
             Tan(var x) => x.Sub(env).Tan(),
             Log(var x, var b) => x.Sub(env).Log(b.Sub(env)),
 
-            Derivative(var f, var x) when env.ContainsKey(f) => env[f].D(x),
+            Derivative(var f, var x) when f is Variable v && env.ContainsKey(v) => env[v].D(x),
 
             var x => x
         };
 
+        /// <summary>
+        /// Numerically evaluates an expression.
+        /// </summary>
         public static double Eval(this KyaniteExpression expression) => expression switch
         {
             Number(var x) => x,
-            Variable("pi") => Math.PI,
-            Variable("e") => Math.E,
+            Variable("pi", true) => Math.PI,
+            Variable("e", true) => Math.E,
 
             Add(var a, var b) => a.Eval() + b.Eval(),
             Multiply(var a, var b) => a.Eval() * b.Eval(),
@@ -38,7 +44,10 @@
             _ => throw new Exception("Unbound variables are present in the expression"),
         };
 
-        public static double At(this KyaniteExpression expression, (Variable, Number)[] values)
+        /// <summary>
+        /// Numerically evaluates an expression for a given set of variable values.
+        /// </summary>
+        public static double At(this KyaniteExpression expression, Dictionary<string, double> values)
         {
             Dictionary<Variable, KyaniteExpression> env = [];
             foreach (var (v, n) in values) env[v] = n;
