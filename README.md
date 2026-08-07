@@ -7,6 +7,7 @@ Kyanite is a CAS (Computer Algebra System) library that handles:
 - LaTeX formatting
 - expression simplification
 - subsitution
+
 The library is designed for quick usage and compact scripts, with QoL utilities already supplied. 
 The following is an example of a Kyanite script:
 ```csharp
