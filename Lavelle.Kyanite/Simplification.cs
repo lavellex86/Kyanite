@@ -29,7 +29,7 @@ namespace Lavelle.Kyanite
                 Add(var a, var b) => a.SimplifyOnce() + b.SimplifyOnce(),
                 Multiply(var a, var b) => a.SimplifyOnce() * b.SimplifyOnce(),
 
-                Power(var x, var e) => x.SimplifyOnce().Power(e.SimplifyOnce()),
+                Pow(var x, var e) => x.SimplifyOnce().Pow(e.SimplifyOnce()),
                 Sin(var x) => x.SimplifyOnce().Sin(),
                 Cos(var x) => x.SimplifyOnce().Cos(),
                 Tan(var x) => x.SimplifyOnce().Tan(),
@@ -47,19 +47,24 @@ namespace Lavelle.Kyanite
                 Multiply(Number(0), var _) => 0,
                 Multiply(var _, Number(0)) => 0,
 
+                Multiply(Number(-1), Add(var a, var b)) => ((-1) * a) + ((-1) * b),
+                Multiply(Number(var c), Add(var a, var b)) => (c * a) + (c * b),
+                Multiply(var x, Pow(var y, Number(-1))) when x.SE(y) => 1,
+                Multiply(Pow(var x, Number(-1)), var y) when x.SE(y) => 1,
                 Multiply(Number(-1), Number(var x)) => -x,
                 Multiply(Number(var x), Number(-1)) => -x,
 
-                Power(var x, Number(0)) => 1,
-                Power(Number(0), var x) => 0,
-                Power(var x, Number(1)) => x,
+                Pow(var x, Number(0)) => 1,
+                Pow(Number(0), var x) => 0,
+                Pow(var x, Number(1)) => x,
 
                 Add(Number(var a), Number(var b)) => a + b,
                 Multiply(Number(var a), Number(var b)) => a * b,
-                Power(Number(var a), Number(var b)) => Math.Pow(a, b),
+                Pow(Number(var a), Number(var b)) => Math.Pow(a, b),
 
                 Sin(Number(0)) => 0,
                 Cos(Number(0)) => 1,
+                Log(var x, var b) when x.SE(b) => 1,
                 Log(var _, Number(1)) => 1,
 
                 Multiply(Multiply(var x, Number(-1)), Number(-1)) => x,
@@ -80,7 +85,7 @@ namespace Lavelle.Kyanite
         {
             if (expression is not Add) return expression;
             var flattened = FlattenAdd(expression);
-            var coeffs = new Dictionary<KyaniteExpression, KyaniteExpression>();
+            var coeffs = new Dictionary<KyaniteExpression, double>();
             var order = new List<KyaniteExpression>();
 
             foreach (var term in flattened)
@@ -90,8 +95,14 @@ namespace Lavelle.Kyanite
                 else { coeffs[trueExpression] = coeff; order.Add(trueExpression); }
             }
 
+            order.Sort((a, b) => GetSortKey(a).CompareTo(GetSortKey(b)));
+
             var result = new List<KyaniteExpression>();
-            foreach (var trueExpression in order) result.Add(coeffs[trueExpression] is Number(1) ? trueExpression : coeffs[trueExpression]);
+            foreach (var trueExpression in order)
+            {
+                var coeff = coeffs[trueExpression];
+                result.Add(coeff == 1.0 ? trueExpression : coeff * trueExpression);
+            }
             return RebuildAdd(result);
         }
 
@@ -99,21 +110,23 @@ namespace Lavelle.Kyanite
         {
             if (expression is not Multiply) return expression;
             var flattened = FlattenMultiply(expression);
-            var exponents = new Dictionary<KyaniteExpression, KyaniteExpression>();
+            var exponents = new Dictionary<KyaniteExpression, double>();
             var order = new List<KyaniteExpression>();
             var coeff = 1.0;
 
             foreach (var factor in flattened)
             {
                 if (factor is Number(var x)) { coeff *= x; continue; }
-                var (y, e) = factor is Power(var b, var exp) ? (b, exp) : (factor, 1);
+                var (y, e) = factor is Pow(var b, Number(var exp)) ? (b, exp) : (factor, 1);
                 if (exponents.ContainsKey(y)) exponents[y] += e;
                 else { exponents[y] = e; order.Add(y); }
             }
 
+            order.Sort((a, b) => GetSortKey(a).CompareTo(GetSortKey(b)));
+
             var result = new List<KyaniteExpression>();
             if (coeff != 1.0) result.Add(coeff);
-            foreach (var y in order) result.Add(exponents[y] is Number(1) ? y : y.Power(exponents[y]));
+            foreach (var y in order) result.Add(exponents[y] == 1.0 ? y : y.Pow(exponents[y]));
             return RebuildMultiply(result);
         }
 
@@ -146,24 +159,29 @@ namespace Lavelle.Kyanite
                 else terms.Add(term);
             }
 
+            terms.Reverse();
             return terms;
         }
 
         private static KyaniteExpression RebuildAdd(List<KyaniteExpression> terms)
         {
-            KyaniteExpression expression = 0;
-            foreach (var term in terms) expression += term;
+            if (terms.Count == 0) return 0;
+            var expression = terms[0];
+            foreach (var term in terms.Skip(1)) expression += term;
             return expression;
         }
         private static KyaniteExpression RebuildMultiply(List<KyaniteExpression> terms)
         {
-            KyaniteExpression expression = 1;
-            foreach (var term in terms) expression *= term;
+            if (terms.Count == 0) return 1;
+            var expression = terms[0];
+            foreach (var term in terms.Skip(1)) expression *= term;
             return expression;
         }
 
         private static (double, KyaniteExpression) Decompose(KyaniteExpression expression)
         {
+
+            if (expression is Number(var n)) return (n, 1);
             if (expression is Multiply)
             {
                 var flattened = FlattenMultiply(expression);
@@ -175,6 +193,13 @@ namespace Lavelle.Kyanite
             }
             return (1, expression);
         }
+
+        private static string GetSortKey(KyaniteExpression expression) => expression switch
+        {
+            Variable(var name, _) => name,
+            Pow(var x, _) => GetSortKey(x),
+            _ => expression.ToString()
+        };
         #endregion
     }
 }

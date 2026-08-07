@@ -23,6 +23,10 @@ namespace Lavelle.Kyanite
         /// <param name="x"></param>
         /// <returns></returns>
         public static Variable C(string x) => new Variable(x, true);
+        /// <summary>
+        /// Creates a new symbolic `Derivative` expression.
+        /// </summary>
+        public static Derivative D(Variable f, Variable x) => new Derivative(f, x);
 
         /// <summary>
         /// Creates a new `Sin` expression.

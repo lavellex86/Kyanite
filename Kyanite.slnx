@@ -1,4 +1,4 @@
 <Solution>
   <Project Path="Lavelle.Kyanite/Lavelle.Kyanite.csproj" />
-  <Project Path="Testing/Testing.csproj" />
+  <Project Path="Testing/Example.csproj" />
 </Solution>

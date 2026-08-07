@@ -25,11 +25,11 @@ namespace Lavelle.Kyanite
                 Add(var a, var b) => a.D(x, partial) + b.D(x, partial),
                 Multiply(var a, var b) => a.D(x, partial) * b + a * b.D(x, partial),
 
-                Power(var y, Number(var e)) => new Number(e) * y.Power(e - 1) * y.D(x, partial),
-                Power(var y, var e) => expression * (e.D(x, partial) * y.Log("e") + e * y.D(x, partial) / y),
+                Pow(var y, Number(var e)) => new Number(e) * y.Pow(e - 1) * y.D(x, partial),
+                Pow(var y, var e) => expression * (e.D(x, partial) * y.Log("e") + e * y.D(x, partial) / y),
                 Sin(var y) => y.Cos() * y.D(x, partial),
                 Cos(var y) => -y.Sin() * y.D(x, partial),
-                Tan(var y) => y.Sec().Power(2) * y.D(x, partial),
+                Tan(var y) => y.Sec().Pow(2) * y.D(x, partial),
                 Log(var y, var b) => y.D(x, partial) / (y * b.Log("e")),
 
                 var y => new Derivative(y, x)

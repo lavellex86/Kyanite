@@ -5,20 +5,39 @@
         /// <summary>
         /// Subsitutes expressions in for variables in an expression.
         /// </summary>
-        public static KyaniteExpression Sub(this KyaniteExpression expression, Dictionary<Variable, KyaniteExpression> env) => expression switch
+        public static KyaniteExpression VSub(this KyaniteExpression expression, Dictionary<Variable, KyaniteExpression> env) => expression switch
         {
             Variable x when env.ContainsKey(x) => env[x],
 
-            Add(var a, var b) => a.Sub(env) + b.Sub(env),
-            Multiply(var a, var b) => a.Sub(env) * b.Sub(env),
+            Add(var a, var b) => a.VSub(env) + b.VSub(env),
+            Multiply(var a, var b) => a.VSub(env) * b.VSub(env),
 
-            Power(var x, var e) => x.Sub(env).Power(e.Sub(env)),
-            Sin(var x) => x.Sub(env).Sin(),
-            Cos(var x) => x.Sub(env).Cos(),
-            Tan(var x) => x.Sub(env).Tan(),
-            Log(var x, var b) => x.Sub(env).Log(b.Sub(env)),
+            Pow(var x, var e) => x.VSub(env).Pow(e.VSub(env)),
+            Sin(var x) => x.VSub(env).Sin(),
+            Cos(var x) => x.VSub(env).Cos(),
+            Tan(var x) => x.VSub(env).Tan(),
+            Log(var x, var b) => x.VSub(env).Log(b.VSub(env)),
 
             Derivative(var f, var x) when f is Variable v && env.ContainsKey(v) => env[v].D(x),
+
+            var x => x
+        };
+
+        /// <summary>
+        /// Subsitutes expressions in for derivatives in an expression.
+        /// </summary>
+        public static KyaniteExpression DSub(this KyaniteExpression expression, Dictionary<Derivative, KyaniteExpression> env) => expression switch
+        {
+            Add(var a, var b) => a.DSub(env) + b.DSub(env),
+            Multiply(var a, var b) => a.DSub(env) * b.DSub(env),
+
+            Pow(var x, var e) => x.DSub(env).Pow(e.DSub(env)),
+            Sin(var x) => x.DSub(env).Sin(),
+            Cos(var x) => x.DSub(env).Cos(),
+            Tan(var x) => x.DSub(env).Tan(),
+            Log(var x, var b) => x.DSub(env).Log(b.DSub(env)),
+
+            Derivative d when env.ContainsKey(d) => env[d],
 
             var x => x
         };
@@ -35,7 +54,7 @@
             Add(var a, var b) => a.Eval() + b.Eval(),
             Multiply(var a, var b) => a.Eval() * b.Eval(),
 
-            Power(var x, var e) => Math.Pow(x.Eval(), e.Eval()),
+            Pow(var x, var e) => Math.Pow(x.Eval(), e.Eval()),
             Sin(var x) => Math.Sin(x.Eval()),
             Cos(var x) => Math.Cos(x.Eval()),
             Tan(var x) => Math.Tan(x.Eval()),
@@ -51,7 +70,7 @@
         {
             Dictionary<Variable, KyaniteExpression> env = [];
             foreach (var (v, n) in values) env[v] = n;
-            return expression.Sub(env).Eval();
+            return expression.VSub(env).Eval();
         }
     }
 }

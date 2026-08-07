@@ -25,7 +25,7 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Divides two expressions.
         /// </summary>
-        public static KyaniteExpression operator /(KyaniteExpression a, KyaniteExpression b) => new Multiply(a, b.Power(-1));
+        public static KyaniteExpression operator /(KyaniteExpression a, KyaniteExpression b) => new Multiply(a, b.Pow(-1));
         /// <summary>
         /// Negates an expression.
         /// </summary>
@@ -34,7 +34,7 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Raises the expression to an exponent.
         /// </summary>
-        public KyaniteExpression Power(KyaniteExpression e) => new Power(this, e);
+        public KyaniteExpression Pow(KyaniteExpression e) => new Pow(this, e);
         /// <summary>
         /// Takes the sine of the expression.
         /// </summary>
@@ -100,7 +100,7 @@ namespace Lavelle.Kyanite
     /// <summary>
     /// Represents an exponentiation operaton.
     /// </summary>
-    public record Power(KyaniteExpression X, KyaniteExpression E) : KyaniteExpression;
+    public record Pow(KyaniteExpression X, KyaniteExpression E) : KyaniteExpression;
     /// <summary>
     /// Represents a sine operation.
     /// </summary>
