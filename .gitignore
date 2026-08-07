@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Lavelle.Kyanite/bin/Debug/net10.0
+/Lavelle.Kyanite/obj/Debug/net10.0
+/Lavelle.Kyanite/obj
+/Testing/bin/Debug/net10.0
+/Testing/obj
