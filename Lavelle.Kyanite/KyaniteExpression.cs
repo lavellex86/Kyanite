@@ -13,49 +13,74 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Adds two expressions.
         /// </summary>
-        public static KyaniteExpression operator +(KyaniteExpression a, KyaniteExpression b) => new Add(a, b);
+        public static Add operator +(KyaniteExpression a, KyaniteExpression b) => new Add(a, b);
         /// <summary>
         /// Subtracts two expressions.
         /// </summary>
-        public static KyaniteExpression operator -(KyaniteExpression a, KyaniteExpression b) => new Add(a, -b);
+        public static Add operator -(KyaniteExpression a, KyaniteExpression b) => new Add(a, -b);
         /// <summary>
         /// Multiplies two expressions.
         /// </summary>
-        public static KyaniteExpression operator *(KyaniteExpression a, KyaniteExpression b) => new Multiply(a, b);
+        public static Multiply operator *(KyaniteExpression a, KyaniteExpression b) => new Multiply(a, b);
         /// <summary>
         /// Divides two expressions.
         /// </summary>
-        public static KyaniteExpression operator /(KyaniteExpression a, KyaniteExpression b) => new Multiply(a, b.Pow(-1));
+        public static Multiply operator /(KyaniteExpression a, KyaniteExpression b) => new Multiply(a, b.Pow(-1));
         /// <summary>
         /// Negates an expression.
         /// </summary>
-        public static KyaniteExpression operator -(KyaniteExpression x) => new Multiply(-1, x);
+        public static Multiply operator -(KyaniteExpression x) => new Multiply(-1, x);
 
         /// <summary>
         /// Raises the expression to an exponent.
         /// </summary>
-        public KyaniteExpression Pow(KyaniteExpression e) => new Pow(this, e);
+        public Pow Pow(KyaniteExpression e) => new Pow(this, e);
         /// <summary>
         /// Takes the sine of the expression.
         /// </summary>
-        public KyaniteExpression Sin() => new Sin(this);
+        public Sin Sin() => new Sin(this);
         /// <summary>
         /// Takes the cosine of the expression.
         /// </summary>
         /// <returns></returns>
-        public KyaniteExpression Cos() => new Cos(this);
+        public Cos Cos() => new Cos(this);
         /// <summary>
         /// Takes the tangent of the expression.
         /// </summary>
-        public KyaniteExpression Tan() => new Tan(this);
-        /// <summary>
-        /// Takes the secant of the expression.
-        /// </summary>
-        public KyaniteExpression Sec() => 1 / Cos();
+        public Tan Tan() => new Tan(this);
         /// <summary>
         /// Takes the logarithm of the expression.
         /// </summary>
-        public KyaniteExpression Log(KyaniteExpression b) => new Log(this, b);
+        public Log Log(KyaniteExpression b) => new Log(this, b);
+
+        /// <summary>
+        /// Takes the inverse of the expression.
+        /// </summary>
+        /// <returns></returns>
+        public KyaniteExpression Inverse() => Pow(-1); 
+        /// <summary>
+        /// Takes the square root of the expression.
+        /// </summary>
+        /// <returns></returns>
+        public KyaniteExpression Sqrt() => Pow(0.5);
+        /// <summary>
+        /// Takes the natural logarithm of the expression.
+        /// </summary>
+        /// <returns></returns>
+        public KyaniteExpression Ln() => Log(KMath.C("e"));
+
+        /// <summary>
+        /// Takes the secant of the expression.
+        /// </summary>
+        public Multiply Sec() => 1 / Cos();
+        /// <summary>
+        /// Takes the cosecant of the expression.
+        /// </summary>
+        public Multiply Csc() => 1 / Sin();
+        /// <summary>
+        /// Takes the cotangent of the expression.
+        /// </summary>
+        public Multiply Cot() => 1 / Tan();
 
         /// <summary>
         /// Converts a `double` to a `Number`.

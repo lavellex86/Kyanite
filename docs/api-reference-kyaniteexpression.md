@@ -11,7 +11,7 @@ Represents a mathematical expression.
 ### Operators
 
 ```csharp
-public static KyaniteExpression operator +(KyaniteExpression a, KyaniteExpression b)
+public static Add operator +(KyaniteExpression a, KyaniteExpression b)
 ```
 
 Adds two expressions.
@@ -19,7 +19,7 @@ Adds two expressions.
 ***
 
 ```csharp
-public static KyaniteExpression operator -(KyaniteExpression a, KyaniteExpression b)
+public static Add operator -(KyaniteExpression a, KyaniteExpression b)
 ```
 
 Subtracts two expressions.
@@ -27,7 +27,7 @@ Subtracts two expressions.
 ***
 
 ```csharp
-public static KyaniteExpression operator *(KyaniteExpression a, KyaniteExpression b)
+public static Multiply operator *(KyaniteExpression a, KyaniteExpression b)
 ```
 
 Multiplies two expressions.
@@ -35,7 +35,7 @@ Multiplies two expressions.
 ***
 
 ```csharp
-public static KyaniteExpression operator /(KyaniteExpression a, KyaniteExpression b)
+public static Multiply operator /(KyaniteExpression a, KyaniteExpression b)
 ```
 
 Divides two expressions.
@@ -43,7 +43,7 @@ Divides two expressions.
 ***
 
 ```csharp
-public static KyaniteExpression operator -(KyaniteExpression x)
+public static Multiply operator -(KyaniteExpression x)
 ```
 
 Negates an expression.
@@ -53,7 +53,7 @@ Negates an expression.
 ### Methods
 
 ```csharp
-public KyaniteExpression Pow(KyaniteExpression e)
+public Pow Pow(KyaniteExpression e)
 ```
 
 Raises the expression to an exponent.
@@ -61,7 +61,7 @@ Raises the expression to an exponent.
 ***
 
 ```csharp
-public KyaniteExpression Sin()
+public Sin Sin()
 ```
 
 Takes the sine of the expression.
@@ -69,7 +69,7 @@ Takes the sine of the expression.
 ***
 
 ```csharp
-public KyaniteExpression Cos()
+public Cos Cos()
 ```
 
 Takes the cosine of the expression.
@@ -77,7 +77,7 @@ Takes the cosine of the expression.
 ***
 
 ```csharp
-public KyaniteExpression Tan()
+public Tan Tan()
 ```
 
 Takes the tangent of the expression.
@@ -85,7 +85,31 @@ Takes the tangent of the expression.
 ***
 
 ```csharp
-public KyaniteExpression Sec()
+public KyaniteExpression Inverse()
+```
+
+Takes the inverse of the expression.
+
+***
+
+```csharp
+public KyaniteExpression Sqrt()
+```
+
+Takes the square root of the expression.
+
+***
+
+```csharp
+public KyaniteExpression Ln()
+```
+
+Takes the natural logarithm of the expression.
+
+***
+
+```csharp
+public Multiply Sec()
 ```
 
 Takes the secant of the expression.
@@ -93,7 +117,23 @@ Takes the secant of the expression.
 ***
 
 ```csharp
-public KyaniteExpression Log(KyaniteExpression b)
+public Multiply Csc()
+```
+
+Takes the cosecant of the expression.
+
+***
+
+```csharp
+public Multiply Cot()
+```
+
+Takes the cotangent of the expression.
+
+***
+
+```csharp
+public Log Log(KyaniteExpression b)
 ```
 
 Takes the logarithm of the expression.

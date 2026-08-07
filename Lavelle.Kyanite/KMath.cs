@@ -44,5 +44,7 @@ namespace Lavelle.Kyanite
         /// Creates a new `Log` expression.
         /// </summary>
         public static Log Log(KyaniteExpression x, KyaniteExpression b) => new Log(x, b);
+
+        public static Pow Exp(KyaniteExpression x) => C("e").Pow(x);
     }
 }
