@@ -11,20 +11,29 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Simplifies an expression.
         /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
         public static KyaniteExpression Simplify(this KyaniteExpression expression)
+        {
+            KyaniteExpression prev;
+            do
+            {
+                prev = expression;
+                expression = expression.SimplifyOnce();
+            } while (!expression.SE(prev));
+            return expression;
+        }
+
+        private static KyaniteExpression SimplifyOnce(this KyaniteExpression expression)
         {
             var simplified = expression switch
             {
-                Add(var a, var b) => a.Simplify() + b.Simplify(),
-                Multiply(var a, var b) => a.Simplify() * b.Simplify(),
+                Add(var a, var b) => a.SimplifyOnce() + b.SimplifyOnce(),
+                Multiply(var a, var b) => a.SimplifyOnce() * b.SimplifyOnce(),
 
-                Power(var x, var e) => x.Simplify().Power(e.Simplify()),
-                Sin(var x) => x.Simplify().Sin(),
-                Cos(var x) => x.Simplify().Cos(),
-                Tan(var x) => x.Simplify().Tan(),
-                Log(var x, var b) => x.Simplify().Log(b.Simplify()),
+                Power(var x, var e) => x.SimplifyOnce().Power(e.SimplifyOnce()),
+                Sin(var x) => x.SimplifyOnce().Sin(),
+                Cos(var x) => x.SimplifyOnce().Cos(),
+                Tan(var x) => x.SimplifyOnce().Tan(),
+                Log(var x, var b) => x.SimplifyOnce().Log(b.SimplifyOnce()),
 
                 var x => x
             };
@@ -46,7 +55,7 @@ namespace Lavelle.Kyanite
                 Power(var x, Number(1)) => x,
 
                 Add(Number(var a), Number(var b)) => a + b,
-                Multiply(Number(var a), Number(var b)) => a + b,
+                Multiply(Number(var a), Number(var b)) => a * b,
                 Power(Number(var a), Number(var b)) => Math.Pow(a, b),
 
                 Sin(Number(0)) => 0,
@@ -59,14 +68,56 @@ namespace Lavelle.Kyanite
             };
 
             simplified = CollectAdd(simplified);
+            simplified = CollectMultiply(simplified);
 
-            // TODO: term collection, polynomials
+            // TODO: polynomials
             // TODO: trig
 
             return simplified;
         }
 
-        #region Flattens
+        private static KyaniteExpression CollectAdd(this KyaniteExpression expression)
+        {
+            if (expression is not Add) return expression;
+            var flattened = FlattenAdd(expression);
+            var coeffs = new Dictionary<KyaniteExpression, KyaniteExpression>();
+            var order = new List<KyaniteExpression>();
+
+            foreach (var term in flattened)
+            {
+                var (coeff, trueExpression) = Decompose(term);
+                if (coeffs.ContainsKey(trueExpression)) coeffs[trueExpression] += coeff;
+                else { coeffs[trueExpression] = coeff; order.Add(trueExpression); }
+            }
+
+            var result = new List<KyaniteExpression>();
+            foreach (var trueExpression in order) result.Add(coeffs[trueExpression] is Number(1) ? trueExpression : coeffs[trueExpression]);
+            return RebuildAdd(result);
+        }
+
+        private static KyaniteExpression CollectMultiply(this KyaniteExpression expression)
+        {
+            if (expression is not Multiply) return expression;
+            var flattened = FlattenMultiply(expression);
+            var exponents = new Dictionary<KyaniteExpression, KyaniteExpression>();
+            var order = new List<KyaniteExpression>();
+            var coeff = 1.0;
+
+            foreach (var factor in flattened)
+            {
+                if (factor is Number(var x)) { coeff *= x; continue; }
+                var (y, e) = factor is Power(var b, var exp) ? (b, exp) : (factor, 1);
+                if (exponents.ContainsKey(y)) exponents[y] += e;
+                else { exponents[y] = e; order.Add(y); }
+            }
+
+            var result = new List<KyaniteExpression>();
+            if (coeff != 1.0) result.Add(coeff);
+            foreach (var y in order) result.Add(exponents[y] is Number(1) ? y : y.Power(exponents[y]));
+            return RebuildMultiply(result);
+        }
+
+        #region Helpers
         private static List<KyaniteExpression> FlattenAdd(KyaniteExpression expression)
         {
             if (expression is not Add) return [];
@@ -110,33 +161,20 @@ namespace Lavelle.Kyanite
             foreach (var term in terms) expression *= term;
             return expression;
         }
-        #endregion
 
-        private static KyaniteExpression CollectAdd(this KyaniteExpression expression)
+        private static (double, KyaniteExpression) Decompose(KyaniteExpression expression)
         {
-            if (expression is not Add) return expression;
-            var flattened = FlattenAdd(expression);
-            var coeffs = new Dictionary<KyaniteExpression, KyaniteExpression>();
-
-            foreach (var term in flattened)
+            if (expression is Multiply)
             {
-                if (term is Multiply multiply)
-                {
-                    var flattenedMultiply = FlattenMultiply(multiply);
-                    foreach (var factor in flattenedMultiply)
-                    {
-                        if (coeffs.ContainsKey(factor))
-                        {
-                            flattenedMultiply.Remove(factor);
-                            coeffs[factor] += RebuildMultiply(flattenedMultiply);
-                        }
-                    }
-                }
+                var flattened = FlattenMultiply(expression);
+                var numbers = flattened.Where(x => x is Number);
+                var rest = flattened.Where(x => x is not Number);
+                var coeff = numbers.Any() ? numbers.Select(x => x.Eval()).Aggregate(1.0, (a, b) => a * b) : 1;
+                var trueExpression = rest.Any() ? RebuildMultiply([.. rest]) : 1;
+                return (coeff, trueExpression);
             }
-
-            var result = new List<KyaniteExpression>();
-            foreach (var (coeff, term) in coeffs) result.Add(coeff * term);
-            return RebuildAdd(result);
+            return (1, expression);
         }
+        #endregion
     }
 }

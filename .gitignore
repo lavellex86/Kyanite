@@ -3,8 +3,7 @@
 ################################################################################
 
 /.vs
-/Lavelle.Kyanite/bin/Debug/net10.0
-/Lavelle.Kyanite/obj/Debug/net10.0
+/Lavelle.Kyanite/bin
 /Lavelle.Kyanite/obj
-/Testing/bin/Debug/net10.0
+/Testing/bin
 /Testing/obj
