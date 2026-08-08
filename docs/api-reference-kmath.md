@@ -1,7 +1,5 @@
 # API Reference - KMath
 
-# API Reference - KMath
-
 ```csharp
 public static partial class KMath
 ```
@@ -10,7 +8,7 @@ Math utilities for Kyanite.
 
 ***
 
-### Methods
+#### Methods
 
 ```csharp
 public static Number N(double x)
