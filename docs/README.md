@@ -31,7 +31,7 @@ Variable q = KMath.V("q"), qdot = KMath.V("dot{q}"), m = KMath.C("m"), k = KMath
 var L = 0.5 * m * qdot.Pow(2) - 0.5 * k * q.Pow(2); // lagrangian, 0.5 m qdot^2 - 0.5 k q^2
 var dLdq = L.PD(q); // KyaniteExpression.PD(x) takes the partial derivative of the expression w.r.t x
 var dLdqdot = L.PD(qdot);
-var el = dLdq - dLdqdot.D(t); // Euler-lagrange equation
+KyaniteExpression el = dLdq - dLdqdot.D(t); // Euler-lagrange equation
 el = el.ESub(new() { [KMath.D(qdot, t)] = KMath.V("ddot{q}") }).Simplify();
 // Kyanite allows you to subsitute expressions using ESub; here we swap derivative out for a variable
 // To go the other way, and swap a variable out for an expression, use VSub

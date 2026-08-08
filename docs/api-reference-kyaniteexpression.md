@@ -85,7 +85,7 @@ Takes the tangent of the expression.
 ***
 
 ```csharp
-public KyaniteExpression Inverse()
+public Pow Inverse()
 ```
 
 Takes the inverse of the expression.
@@ -93,7 +93,7 @@ Takes the inverse of the expression.
 ***
 
 ```csharp
-public KyaniteExpression Sqrt()
+public Pow Sqrt()
 ```
 
 Takes the square root of the expression.
@@ -101,7 +101,15 @@ Takes the square root of the expression.
 ***
 
 ```csharp
-public KyaniteExpression Ln()
+public Pow Sq()
+```
+
+Takes the square of the expression
+
+***
+
+```csharp
+public Log Ln()
 ```
 
 Takes the natural logarithm of the expression.
@@ -227,3 +235,11 @@ public static KyaniteExpression ESub(this KyaniteExpression expression, Dictiona
 ```
 
 Subsitutes an expression in for another expresion.
+
+***
+
+```csharp
+public static bool Has(this KyaniteExpression expression, KyaniteExpression x)
+```
+
+Checks whether the expression contains `x`.

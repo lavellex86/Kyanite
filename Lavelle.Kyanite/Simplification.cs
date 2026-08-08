@@ -62,8 +62,23 @@ namespace Lavelle.Kyanite
                 Multiply(Number(var a), Number(var b)) => a * b,
                 Pow(Number(var a), Number(var b)) => Math.Pow(a, b),
 
+                Add(Pow(Sin(var x1), Number(2)), Pow(Cos(var x2), Number(2))) when x1.SE(x2) => 1,
+                Add(Number(1), Multiply(Number(-1), Pow(Sin(var x), Number(2)))) => x.Cos().Sq(),
+                Add(Multiply(Number(-1), Pow(Sin(var x), Number(2))), Number(1)) => x.Cos().Sq(),
+                Add(Number(1), Multiply(Number(-1), Pow(Cos(var x), Number(2)))) => x.Sin().Sq(),
+                Add(Multiply(Number(-1), Pow(Cos(var x), Number(2))), Number(1)) => x.Sin().Sq(),
+
+                Add(Pow(Tan(var x), Number(2)), Number(1)) => x.Sec().Pow(2),
+                Add(Number(1), Pow(Tan(var x), Number(2))) => x.Sec().Pow(2),
+                Add(Pow(Multiply(Number(1), Pow(Tan(var x), Number(-1))), Number(2)), Number(1)) => x.Csc().Pow(2),
+                Add(Number(1), Pow(Multiply(Number(1), Pow(Tan(var x), Number(-1))), Number(2))) => x.Csc().Pow(2),
+
                 Sin(Number(0)) => 0,
                 Cos(Number(0)) => 1,
+                Tan(Number(0)) => 0,
+                Sin(Variable("pi", true)) => 0,
+                Cos(Variable("pi", true)) => -1,
+
                 Log(var x, var b) when x.SE(b) => 1,
                 Log(var _, Number(1)) => 1,
 
@@ -76,7 +91,6 @@ namespace Lavelle.Kyanite
             simplified = CollectMultiply(simplified);
 
             // TODO: polynomials
-            // TODO: trig
 
             return simplified;
         }
@@ -101,6 +115,7 @@ namespace Lavelle.Kyanite
             foreach (var trueExpression in order)
             {
                 var coeff = coeffs[trueExpression];
+                if (trueExpression is Number(1)) { result.Add(coeff); continue; }
                 result.Add(coeff == 1.0 ? trueExpression : coeff * trueExpression);
             }
             return RebuildAdd(result);
@@ -117,7 +132,7 @@ namespace Lavelle.Kyanite
             foreach (var factor in flattened)
             {
                 if (factor is Number(var x)) { coeff *= x; continue; }
-                var (y, e) = factor is Pow(var b, Number(var exp)) ? (b, exp) : (factor, 1);
+                var (y, e) = factor is Pow(var b, Number(var exp)) ? (b, exp) : (factor, 1.0);
                 if (exponents.ContainsKey(y)) exponents[y] += e;
                 else { exponents[y] = e; order.Add(y); }
             }

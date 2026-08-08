@@ -12,7 +12,7 @@ Variable q = KMath.V("q"), qdot = KMath.V("dot{q}"), m = KMath.C("m"), k = KMath
 var L = 0.5 * m * qdot.Pow(2) - 0.5 * k * q.Pow(2);
 var dLdq = L.PD(q);
 var dLdqdot = L.PD(qdot);
-var el = dLdq - dLdqdot.D(t);
+KyaniteExpression el = dLdq - dLdqdot.D(t);
 el = el.ESub(new() { [KMath.D(qdot, t)] = KMath.V("ddot{q}") }).Simplify();
 Console.WriteLine("L = " + L.ToLaTeX());
 Console.WriteLine("EL = " + el.ToLaTeX() + " = 0");

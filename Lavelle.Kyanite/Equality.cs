@@ -29,5 +29,26 @@ namespace Lavelle.Kyanite
 
             _ => false
         };
+
+        /// <summary>
+        /// Checks whether the expression contains <paramref name="x"/>.
+        /// </summary>
+        public static bool Has(this KyaniteExpression expression, KyaniteExpression x) => expression switch
+        {
+            var y when x.SE(y) => true,
+
+            Add(var a, var b) => a.Has(x) || b.Has(x),
+            Multiply(var a, var b) => a.Has(x) || b.Has(x),
+
+            Pow(var y, var e) => y.Has(x) || e.Has(x),
+            Sin(var y) => y.Has(x),
+            Cos(var y) => y.Has(x),
+            Tan(var y) => y.Has(x),
+            Log(var y, var b) => y.Has(x) || b.Has(x),
+
+            Derivative(var f, _) => f.Has(x),
+
+            _ => false
+        };
     }
 }

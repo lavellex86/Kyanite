@@ -50,6 +50,7 @@ namespace Lavelle.Kyanite
         private static string N(double number) => number.ToString("G6");
         private static bool Negated(KyaniteExpression expression, out KyaniteExpression trueX)
         {
+            if (expression is Number(var n) && n < 0) { trueX = new Number(-n); return true; }
             if (expression is Multiply(Number(-1), var x)) { trueX = x; return true; }
             if (expression is Multiply(var y, Number(-1))) { trueX = y; return true; }
             if (expression is Multiply(Number(var z), var w) && z < 0)

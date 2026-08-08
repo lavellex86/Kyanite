@@ -57,17 +57,21 @@ namespace Lavelle.Kyanite
         /// Takes the inverse of the expression.
         /// </summary>
         /// <returns></returns>
-        public KyaniteExpression Inverse() => Pow(-1); 
+        public Pow Inverse() => Pow(-1); 
         /// <summary>
         /// Takes the square root of the expression.
         /// </summary>
         /// <returns></returns>
-        public KyaniteExpression Sqrt() => Pow(0.5);
+        public Pow Sqrt() => Pow(0.5);
+        /// <summary>
+        /// Takes the square of the expression.
+        /// </summary>
+        public Pow Sq () => Pow(2);
         /// <summary>
         /// Takes the natural logarithm of the expression.
         /// </summary>
         /// <returns></returns>
-        public KyaniteExpression Ln() => Log(KMath.C("e"));
+        public Log Ln() => Log(KMath.C("e"));
 
         /// <summary>
         /// Takes the secant of the expression.
