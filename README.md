@@ -7,6 +7,7 @@ Kyanite is a CAS (Computer Algebra System) library that handles:
 - LaTeX formatting
 - expression simplification
 - subsitution
+- solving equations
 
 The library is designed for quick usage and compact scripts, with QoL utilities already supplied. 
 The following is an example of a Kyanite script:
@@ -46,7 +47,6 @@ Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
 This computes acceleration from an equation of motion, the Euler-Lagrange equation from a Lagrangian, and the derivative of entropy with its maximum.
 You can view Kyanite's docs [here](https://lavelle.gitbook.io/kyanite-documentation/).
 ## TODOs
-- Trig simplification (identities & rules)
 - Integration rules
 - Expand method
 - Complex numbers

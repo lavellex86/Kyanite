@@ -74,6 +74,20 @@ namespace Lavelle.Kyanite
                 Add(Pow(Multiply(Number(1), Pow(Tan(var x), Number(-1))), Number(2)), Number(1)) => x.Csc().Pow(2),
                 Add(Number(1), Pow(Multiply(Number(1), Pow(Tan(var x), Number(-1))), Number(2))) => x.Csc().Pow(2),
 
+                Add(Multiply(Sin(var a1), Cos(var b1)), Multiply(Cos(var a2), Sin(var b2))) when a1.SE(a2) && b1.SE(b2) => (a1 + b1).Sin(),
+                Add(Multiply(Cos(var a1), Sin(var b1)), Multiply(Sin(var a2), Cos(var b2))) when a1.SE(a2) && b1.SE(b2) => (a1 + b1).Sin(),
+                Add(Multiply(Cos(var a1), Cos(var b1)), Multiply(Number(-1), Multiply(Sin(var a2), Sin(var b2)))) when a1.SE(a2) && b1.SE(b2) => (a1 + b1).Cos(),
+                Add(Multiply(Number(-1), Multiply(Sin(var a1), Sin(var b1))), Multiply(Cos(var a2), Cos(var b2))) when a1.SE(a2) && b1.SE(b2) => (a1 + b1).Cos(),
+                Multiply(Number(2), Multiply(Sin(var x1), Cos(var x2))) when x1.SE(x2) => (2 * x1).Sin(),
+                Multiply(Number(2), Multiply(Cos(var x1), Sin(var x2))) when x1.SE(x2) => (2 * x1).Sin(),
+                Multiply(Multiply(Sin(var x1), Cos(var x2)), Number(2)) when x1.SE(x2) => (2 * x1).Sin(),
+                Add(Pow(Cos(var x1), Number(2)), Multiply(Number(-1), Pow(Sin(var x2), Number(2)))) when x1.SE(x2) => (2 * x1).Cos(),
+                Add(Multiply(Number(-1), Pow(Sin(var x1), Number(2))), Pow(Cos(var x2), Number(2))) when x1.SE(x2) => (2 * x1).Cos(),
+                Add(Number(1), Multiply(Number(-2), Pow(Sin(var x), Number(2)))) => (2 * x).Cos(),
+                Add(Multiply(Number(-2), Pow(Sin(var x), Number(2))), Number(1)) => (2 * x).Cos(),
+                Add(Multiply(Number(2), Pow(Cos(var x), Number(2))), Number(-1)) => (2 * x).Cos(),
+                Add(Number(-1), Multiply(Number(2), Pow(Cos(var x), Number(2)))) => (2 * x).Cos(),
+
                 Sin(Number(0)) => 0,
                 Cos(Number(0)) => 1,
                 Tan(Number(0)) => 0,
@@ -82,6 +96,14 @@ namespace Lavelle.Kyanite
 
                 Log(var x, var b) when x.SE(b) => 1,
                 Log(var _, Number(1)) => 1,
+                Add(Log(var a, var b1), Log(var c, var b2)) when b1.SE(b2) => (a * c).Log(b1),
+                Add(Log(var a, var b1), Multiply(Number(-1), Log(var c, var b2))) when b1.SE(b2) => (a * c.Pow(-1)).Log(b1),
+                Add(Multiply(Number(-1), Log(var c, var b1)), Log(var a, var b2)) when b1.SE(b2) => (a * c.Pow(-1)).Log(b1),
+                Multiply(Number(var n), Log(var x, var b)) => x.Pow(n).Log(b),
+                Multiply(Log(var x, var b), Number(var n)) => x.Pow(n).Log(b),
+                Log(Number(1), var _) => 0,
+
+                Pow(Pow(var x, var a), var b) => x.Pow(a * b),
 
                 Multiply(Multiply(var x, Number(-1)), Number(-1)) => x,
 
