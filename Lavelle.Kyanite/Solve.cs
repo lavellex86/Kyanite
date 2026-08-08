@@ -25,7 +25,7 @@ namespace Lavelle.Kyanite
             Multiply(var a, var b) when b.Has(x) => Solve(b, r / a, x),
 
             Pow(var y, Number(var e)) when y.Has(x) => Solve(y, r.Pow(1 / e), x),
-            Pow(var y, var e) when e.Has(x) => Solve(e, r / l.Log("e"), x),
+            Pow(var y, var e) when e.Has(x) => Solve(e, r.Log(y), x),
 
             Log(var y, var b) when y.Has(x) => Solve(y, b.Pow(r), x),
 

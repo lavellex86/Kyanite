@@ -45,6 +45,13 @@ var dHdp = H.D(p); // first derivative, simplifies automatically
 Console.WriteLine("H = " + H.ToLaTeX());
 Console.WriteLine(@"\frac{dH}{dp} = " + dHdp.ToLaTeX());
 Console.WriteLine(@"p = 0.5 \implies \frac{dH}{dp} = " + dHdp.At(new() { ["p"] = 0.5, ["e"] = Math.E })); // .At evaluates an expression using the variable map given
+
+Variable N = KMath.C("N"), N0 = KMath.C("N_0"), lambda = KMath.C("lambda");
+var decay = N0 * KMath.Exp(-lambda * t); // exponential decay, N = N_0 e^{-lambda t}
+var solution = KMath.Solve(decay, N, t); // solves, returning (lhs, rhs) in the form f(x) = g
+// sometimes an expression is to complex to fully solve for x, so it'll reduce as far as possible and give you what it can
+Console.WriteLine("N = " + decay.ToLaTeX());
+Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
 ```
 {% endcode %}
 

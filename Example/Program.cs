@@ -23,3 +23,9 @@ var dHdp = H.D(p);
 Console.WriteLine("H = " + H.ToLaTeX());
 Console.WriteLine(@"\frac{dH}{dp} = " + dHdp.ToLaTeX());
 Console.WriteLine(@"p = 0.5 \implies \frac{dH}{dp} = " + dHdp.At(new() { ["p"] = 0.5, ["e"] = Math.E }));
+
+Variable N = KMath.C("N"), N0 = KMath.C("N_0"), lambda = KMath.C("lambda");
+var decay = N0 * KMath.Exp(-lambda * t);
+var solution = KMath.Solve(decay, N, t);
+Console.WriteLine("N = " + decay.ToLaTeX());
+Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());

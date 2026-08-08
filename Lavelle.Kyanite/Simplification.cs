@@ -57,6 +57,7 @@ namespace Lavelle.Kyanite
                 Pow(var x, Number(0)) => 1,
                 Pow(Number(0), var x) => 0,
                 Pow(var x, Number(1)) => x,
+                Log(Pow(var b1, var exp), var b2) when b1.SE(b2) => exp,
 
                 Add(Number(var a), Number(var b)) => a + b,
                 Multiply(Number(var a), Number(var b)) => a * b,
