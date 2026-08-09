@@ -48,8 +48,19 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Raises e to the <paramref name="x"/>th power.
         /// </summary>
-        /// <param name="x"></param>
-        /// <returns></returns>
         public static Pow Exp(KyaniteExpression x) => C("e").Pow(x);
+
+        /// <summary>
+        /// Creates a new <c>Sinh</c> expression.
+        /// </summary>
+        public static Sinh Sinh(KyaniteExpression expression) => new Sinh(expression);
+        /// <summary>
+        /// Creates a new <c>Cosh</c> expression.
+        /// </summary>
+        public static Cosh Cosh(KyaniteExpression expression) => new Cosh(expression);
+        /// <summary>
+        /// Creates a new <c>Tanh</c> expression.
+        /// </summary>
+        public static Tanh Tanh(KyaniteExpression expression) => new Tanh(expression);
     }
 }

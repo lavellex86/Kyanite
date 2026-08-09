@@ -17,6 +17,9 @@
             Cos(var x) => x.VSub(env).Cos(),
             Tan(var x) => x.VSub(env).Tan(),
             Log(var x, var b) => x.VSub(env).Log(b.VSub(env)),
+            Sinh(var x) => x.VSub(env).Sinh(),
+            Cosh(var x) => x.VSub(env).Cosh(),
+            Tanh(var x) => x.VSub(env).Tanh(),
 
             Derivative(var f, var x) when f is Variable v && env.ContainsKey(v) => env[v].D(x),
             Derivative(var f, var x) => f.VSub(env).D(x),
@@ -39,6 +42,9 @@
             Cos(var x) => x.ESub(env).Cos(),
             Tan(var x) => x.ESub(env).Tan(),
             Log(var x, var b) => x.ESub(env).Log(b.ESub(env)),
+            Sinh(var x) => x.ESub(env).Sinh(),
+            Cosh(var x) => x.ESub(env).Cosh(),
+            Tanh(var x) => x.ESub(env).Tanh(),
 
             Derivative(var f, var x) when env.ContainsKey(f) => env[f].D(x),
             Derivative(var f, var x) => f.ESub(env).D(x),

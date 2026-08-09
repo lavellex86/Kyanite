@@ -52,6 +52,20 @@ namespace Lavelle.Kyanite
         /// Takes the logarithm of the expression.
         /// </summary>
         public Log Log(KyaniteExpression b) => new Log(this, b);
+        /// <summary>
+        /// Takes the hyperbolic sine of the expression.
+        /// </summary>
+        public Sinh Sinh() => new(this);
+        /// <summary>
+        /// Takes the hyperbolic cosine of the operation.
+        /// </summary>
+        /// <returns></returns>
+        public Cosh Cosh() => new(this);
+        /// <summary>
+        /// Takes the hyperbolic tangent of the expression.
+        /// </summary>
+        /// <returns></returns>
+        public Tanh Tanh() => new(this);
 
         /// <summary>
         /// Takes the inverse of the expression.
@@ -85,6 +99,18 @@ namespace Lavelle.Kyanite
         /// Takes the cotangent of the expression.
         /// </summary>
         public Multiply Cot() => 1 / Tan();
+        /// <summary>
+        /// Takes the hyperbolic secant of the expression.
+        /// </summary>
+        public Multiply Sech() => 1 / Cosh();
+        /// <summary>
+        /// Takes the hyperbolic cosecant of the expression.
+        /// </summary>
+        public Multiply Csch() => 1 / Sinh();
+        /// <summary>
+        /// Takes the hyperbolic cotangent of the expression.
+        /// </summary>
+        public Multiply Coth() => 1 / Tanh();
 
         /// <summary>
         /// Converts a `double` to a `Number`.
@@ -152,4 +178,17 @@ namespace Lavelle.Kyanite
     /// Represents a derivative operation.
     /// </summary>
     public record Derivative(KyaniteExpression f, Variable x) : KyaniteExpression;
+
+    /// <summary>
+    /// Represents a hyperbolic sine operation.
+    /// </summary>
+    public record Sinh(KyaniteExpression X) : KyaniteExpression;
+    /// <summary>
+    /// Represents a hyperbolic cosine operation.
+    /// </summary>
+    public record Cosh(KyaniteExpression X) : KyaniteExpression;
+    /// <summary>
+    /// Represents a hyperbolic tangent operation.
+    /// </summary>
+    public record Tanh(KyaniteExpression X) : KyaniteExpression;
 }

@@ -87,3 +87,27 @@ public static (KyaniteExpression L, KyaniteExpression R) Solve(KyaniteExpression
 ```
 
 Solves for `x` in an equation `l` = `r`.
+
+***
+
+```csharp
+public static Sinh Sinh(KyaniteExpression expression)
+```
+
+Creates a new `Sinh` expression.
+
+***
+
+```csharp
+public static Cosh Cosh(KyaniteExpression expression)
+```
+
+Creates a new `Cosh` expression.
+
+***
+
+```csharp
+public static Tanh Tanh(KyaniteExpression expression)
+```
+
+Creates a new `Tanh` expression.

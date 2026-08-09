@@ -35,6 +35,9 @@ namespace Lavelle.Kyanite
             Tan(var x) => $@"\tan \left( {x.ToLaTeX(0)} \right)",
             Log(var x, Variable("e", true)) => $@"\ln \left( {x.ToLaTeX(0)} \right)",
             Log(var x, var b) => $@"\log_{{ {b.ToLaTeX(0)} }} \left( {x.ToLaTeX(0)} \right)",
+            Sinh(var x) => $@"\sinh \left( {x.ToLaTeX(0)} \right)",
+            Cosh(var x) => $@"\cosh \left( {x.ToLaTeX(0)} \right)",
+            Tanh(var x) => $@"\tanh \left( {x.ToLaTeX(0)} \right)",
 
             Derivative(var f, var x) when f is Variable => $@"\frac{{ d{f.ToLaTeX(0)} }}{{ d{x.ToLaTeX(0)} }}",
             Derivative(var f, var x) => $@"\frac{{ d }}{{ d{x.ToLaTeX(0)} }}\left( {f.ToLaTeX(0)} \right)",

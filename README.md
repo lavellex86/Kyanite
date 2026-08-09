@@ -47,8 +47,8 @@ Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
 This computes acceleration from an equation of motion, the Euler-Lagrange equation from a Lagrangian, and the derivative of entropy with its maximum.
 You can view Kyanite's docs [here](https://lavelle.gitbook.io/kyanite-documentation/).
 ## TODOs
+- LaTeX cleanup
 - Integration rules
 - Expand method
-- Complex numbers
 - Summation and tensors
 - Factoring & polynomial standard form

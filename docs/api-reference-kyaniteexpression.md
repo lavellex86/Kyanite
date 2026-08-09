@@ -164,6 +164,30 @@ Converts a `string` to a `Variable`.
 
 ***
 
+```csharp
+public Sinh Sinh()
+```
+
+Takes the hyperbolic sine of the expression.
+
+***
+
+```csharp
+public Cosh Cosh()
+```
+
+Takes the hyperbolic cosine of the expression.
+
+***
+
+```csharp
+public Tanh Tanh()
+```
+
+Takes the hyperbolic tangent of the expression.
+
+***
+
 ### Extension Methods
 
 ```csharp

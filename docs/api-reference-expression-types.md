@@ -97,3 +97,33 @@ public record Derivative(KyaniteExpression f, Variable x) : KyaniteExpression
 ```
 
 Represents a derivative operation.
+
+***
+
+### Sinh
+
+```csharp
+public record Sinh(KyaniteExpression X) : KyaniteExpression
+```
+
+Represents a hyperbolic sine operation.
+
+***
+
+### Cosh
+
+```csharp
+public record Cosh(KyaniteExpression X) : KyaniteExpression
+```
+
+Represents a hyperbolic cosine operation.
+
+***
+
+### Tanh
+
+```csharp
+public record Tanh(KyaniteExpression X) : KyaniteExpression
+```
+
+Represents a hyperbolic tangent operation.

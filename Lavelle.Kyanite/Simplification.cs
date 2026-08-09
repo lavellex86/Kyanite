@@ -34,6 +34,9 @@ namespace Lavelle.Kyanite
                 Cos(var x) => x.SimplifyOnce().Cos(),
                 Tan(var x) => x.SimplifyOnce().Tan(),
                 Log(var x, var b) => x.SimplifyOnce().Log(b.SimplifyOnce()),
+                Sinh(var x) => x.SimplifyOnce().Sinh(),
+                Cosh(var x) => x.SimplifyOnce().Cosh(),
+                Tanh(var x) => x.SimplifyOnce().Tanh(),
 
                 var x => x
             };
@@ -106,6 +109,22 @@ namespace Lavelle.Kyanite
                 Pow(Pow(var x, var a), var b) => x.Pow(a * b),
 
                 Multiply(Multiply(var x, Number(-1)), Number(-1)) => x,
+
+                Sinh(Number(0)) => 0,
+                Cosh(Number(0)) => 1,
+                Tanh(Number(0)) => 0,
+                Add(Pow(Cosh(var x1), Number(2)), Multiply(Number(-1), Pow(Sinh(var x2), Number(2)))) when x1.SE(x2) => 1,
+                Add(Multiply(Number(-1), Pow(Sinh(var x1), Number(2))), Pow(Cosh(var x2), Number(2))) when x1.SE(x2) => 1,
+                Multiply(Number(2), Multiply(Sinh(var x1), Cosh(var x2))) when x1.SE(x2) => (2 * x1).Sinh(),
+                Multiply(Number(2), Multiply(Cosh(var x1), Sinh(var x2))) when x1.SE(x2) => (2 * x1).Sinh(),
+                Multiply(Multiply(Sinh(var x1), Cosh(var x2)), Number(2)) when x1.SE(x2) => (2 * x1).Sinh(),
+                Add(Pow(Cosh(var x1), Number(2)), Pow(Sinh(var x2), Number(2))) when x1.SE(x2) => (2 * x1).Cosh(),
+                Add(Pow(Sinh(var x2), Number(2)), Pow(Cosh(var x1), Number(2))) when x1.SE(x2) => (2 * x1).Cosh(),
+                Add(Number(1), Multiply(Number(2), Pow(Sinh(var x), Number(2)))) => (2 * x).Cosh(),
+                Add(Multiply(Number(2), Pow(Sinh(var x), Number(2))), Number(1)) => (2 * x).Cosh(),
+                Add(Multiply(Number(2), Pow(Cosh(var x), Number(2))), Number(-1)) => (2 * x).Cosh(),
+                Add(Number(-1), Multiply(Number(2), Pow(Cosh(var x), Number(2)))) => (2 * x).Cosh(),
+
 
                 var x => x
             };

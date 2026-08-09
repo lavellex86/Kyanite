@@ -24,6 +24,9 @@ namespace Lavelle.Kyanite
             (Cos x, Cos y) => SE(x.X, y.X),
             (Tan x, Tan y) => SE(x.X, y.X),
             (Log x, Log y) => SE(x.X, y.X) && SE(x.B, y.B),
+            (Sinh x, Sinh y) => SE(x.X, y.X),
+            (Cosh x, Cosh y) => SE(x.X, y.X),
+            (Tanh x, Tanh y) => SE(x.X, y.X),
 
             (Derivative x, Derivative y) => SE(x.f, y.f) && SE(x.x, y.x),
 

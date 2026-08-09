@@ -31,6 +31,9 @@ namespace Lavelle.Kyanite
                 Cos(var y) => -y.Sin() * y.D(x, partial),
                 Tan(var y) => y.Sec().Pow(2) * y.D(x, partial),
                 Log(var y, var b) => y.D(x, partial) / (y * b.Log("e")),
+                Sinh(var y) => y.Cosh() * y.D(x, partial),
+                Cosh(var y) => y.Sinh() * y.D(x, partial),
+                Tanh(var y) => y.Sech() * y.D(x, partial),
 
                 var y => new Derivative(y, x)
             };
