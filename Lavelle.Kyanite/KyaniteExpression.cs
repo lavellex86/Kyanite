@@ -32,6 +32,11 @@ namespace Lavelle.Kyanite
         public static Multiply operator -(KyaniteExpression x) => new Multiply(-1, x);
 
         /// <summary>
+        /// Multiples two expressions.
+        /// </summary>
+        public Multiply this[KyaniteExpression expression] { get => this * expression; }
+
+        /// <summary>
         /// Raises the expression to an exponent.
         /// </summary>
         public Pow Pow(KyaniteExpression e) => new Pow(this, e);

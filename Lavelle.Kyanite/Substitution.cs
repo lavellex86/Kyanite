@@ -56,6 +56,11 @@
         /// </summary>
         public static double At(this KyaniteExpression expression, Dictionary<string, double> values)
         {
+            expression = expression.Sub(new()
+            {
+                ["e"] = Math.E,
+                ["pi"] = Math.PI
+            }).Simplify();
             Dictionary<KyaniteExpression, KyaniteExpression> env = [];
             foreach (var (v, n) in values) env[v] = n;
             return expression.Sub(env).Eval();

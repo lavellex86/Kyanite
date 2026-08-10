@@ -50,6 +50,11 @@ Negates an expression.
 
 ***
 
+```csharp
+public Multiply this[KyaniteExpression expression] { get => this * expression; }
+```
+Multiplies two expressions.
+
 ### Methods
 
 ```csharp
@@ -279,3 +284,11 @@ public static KyaniteExpression Int(this KyaniteExpression expression, Variable 
 ```
 
 Integrates an expression w.r.t <paramref name="x"/> with constant of integration <paramref name="C"/>.
+
+***
+
+```csharp
+public static Func<Dictionary<string, double>, double> Compile(this KyaniteExpression expression)
+```
+
+Compiles an expression to a C# function.
