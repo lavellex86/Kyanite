@@ -15,51 +15,66 @@ The library is designed for quick usage and compact scripts, with QoL utilities 
 The following is an example of a Kyanite script:
 ```csharp
 using Lavelle.Kyanite;
+using static Lavelle.Kyanite.KMath;
 
 Variable x0 = C("x_0"), v0 = C("v_0"), g = C("g"), t = V("t");
+// the KMath class has three utilities for creating symbols:
+// - V, which creates a new variable
+// - C, which creates a new constant
+// - D, which creates a new symbolic derivative
+// Variable inherits from the base class KyaniteExpression
+
 var x = x0 + v0 * t + 0.5 * g * t.Sq();
-var v = x.D(t);
+// KyaniteExpression objects have operators and methods attached, so expressions can be written easily
+// this is x0 + v0 t + 0.5 g t^2
+var v = x.D(t); // KyaniteExpression.D(x) takes the derivative of the expression w.r.t x
 var a = v.D(t);
-Console.WriteLine("x = " + x.ToLaTeX());
+Console.WriteLine("x = " + x.ToLaTeX()); // we can output to LaTeX too
 Console.WriteLine("v = " + v.ToLaTeX());
 Console.WriteLine("a = " + a.ToLaTeX());
 
 Variable q = V("q"), qdot = V("dot{q}"), m = C("m"), k = C("k");
-var L = 0.5 * m * qdot.Sq() - 0.5 * k * q.Sq();
-var dLdq = L.PD(q);
+// variable names should be written as you'd like to see them in latex; however, to increase readability, names like dot{x} and bar{x} will be escaped automatically into \dot{x} and \bar{x}
+var L = 0.5 * m * qdot.Sq() - 0.5 * k * q.Sq(); // lagrangian, 0.5 m qdot^2 - 0.5 k q^2
+var dLdq = L.PD(q); // KyaniteExpression.PD(x) takes the partial derivative of the expression w.r.t x
 var dLdqdot = L.PD(qdot);
-KyaniteExpression el = dLdq - dLdqdot.D(t);
+KyaniteExpression el = dLdq - dLdqdot.D(t); // Euler-lagrange equation
 el = el.ESub(new() { [D(qdot, t)] = V("ddot{q}") }).Simplify();
+// Kyanite allows you to subsitute expressions using Sub; here we swap derivative out for a variable
 Console.WriteLine("L = " + L.ToLaTeX());
 Console.WriteLine("EL = " + el.ToLaTeX() + " = 0");
 
 Variable p = V("p"), e = C("e");
-var H = -p * p.Log(e) - (1 - p) * (1 - p).Log(e);
-var dHdp = H.D(p);
+var H = -p * p.Log(e) - (1 - p) * (1 - p).Log(e); // Kyanite currently includes .Power, .Sin, .Cos, .Tan, and .Log
+var dHdp = H.D(p); // first derivative
 Console.WriteLine("H = " + H.ToLaTeX());
 Console.WriteLine(@"\frac{dH}{dp} = " + dHdp.ToLaTeX());
-Console.WriteLine(@"p = 0.5 \implies \frac{dH}{dp} = " + dHdp.At(new() { ["p"] = 0.5, ["e"] = Math.E }));
+Console.WriteLine(@"p = 0.5 \implies \frac{dH}{dp} = " + dHdp.At(new() { ["p"] = 0.5, ["e"] = Math.E })); // .At evaluates an expression using the variable name -> value map given
 
 Variable N = C("N"), N0 = C("N_0"), lambda = C("lambda");
-var decay = N0 * Exp(-lambda * t);
-var solution = Solve(decay, N, t);
+var decay = N0 * Exp(-lambda * t); // exponential decay, N = N_0 e^{-lambda t}
+var solution = Solve(decay, N, t); // solves, returning (lhs, rhs) in the form f(x) = g
+// sometimes an expression is to complex to fully solve for x, so it'll reduce as far as possible and give you what it can
 Console.WriteLine("N = " + decay.ToLaTeX());
 Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
 
 Variable n = C("n"), R = C("R"), T = C("T"), V = V("V");
-var P = n[R][T] / V;
-var W = P.Int(V);
+var P = n[R][T] / V; // Kyanite supports juxtaposition style multiplication via brackets as well
+var W = P.Int(V); // we can integrate with .Int
 Console.WriteLine("P = " + P.ToLaTeX());
 Console.WriteLine("W = " + W.ToLaTeX());
+// expressions simplify on .ToLaTeX
+// to simplify manually, call .Simplify
 
 Variable y = V("y");
 var f = y.Cos() - y;
 var dfdy = f.D(y);
-var compiledF = f.Compile();
-var compiledDerivative = dfdy.Compile();
-var root = 1.0;
-for (int i = 0; i < 100; i++)
-    root -= compiledF(new() { ["y"] = root }) / compiledDerivative(new() { ["y"] = root });
+var compiledF = f.Compile(); // .Compile turns an expression into a C# function
+var compiledDerivative = dfdy.Compile(); // this means we can write a math expression and easily generate C# code 
+var root = 1.0; // finding the roots with the compiled method
+for (int i = 0; i < 100; i++) // unlike .At, which uses the symbolic tree, .Compile uses JIT compilation
+    root -= compiledF(new() { ["y"] = root }) / compiledDerivative(new() { ["y"] = root }); // this makes it fast in hot loops like this
+// passing in arguments is done in the same way as .At- dictionary of variable names to doubles
 Console.WriteLine("f(y) = " + f.ToLaTeX());
 Console.WriteLine(@"\frac{df}{dy} = " + dfdy.ToLaTeX());
 Console.WriteLine("root = " + root);
