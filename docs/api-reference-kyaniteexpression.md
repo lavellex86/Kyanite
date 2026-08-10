@@ -188,6 +188,10 @@ Takes the hyperbolic tangent of the expression.
 
 ***
 
+```csharp
+
+```
+
 ### Extension Methods
 
 ```csharp
@@ -267,3 +271,11 @@ public static bool Has(this KyaniteExpression expression, KyaniteExpression x)
 ```
 
 Checks whether the expression contains `x`.
+
+***
+
+```csharp
+public static KyaniteExpression Int(this KyaniteExpression expression, Variable x, Variable? C = null)
+```
+
+Integrates an expression w.r.t <paramref name="x"/> with constant of integration <paramref name="C"/>.

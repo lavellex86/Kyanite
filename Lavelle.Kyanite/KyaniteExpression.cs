@@ -177,7 +177,7 @@ namespace Lavelle.Kyanite
     /// <summary>
     /// Represents a derivative operation.
     /// </summary>
-    public record Derivative(KyaniteExpression f, Variable x) : KyaniteExpression;
+    public record Derivative(KyaniteExpression F, Variable X) : KyaniteExpression;
 
     /// <summary>
     /// Represents a hyperbolic sine operation.
@@ -191,4 +191,9 @@ namespace Lavelle.Kyanite
     /// Represents a hyperbolic tangent operation.
     /// </summary>
     public record Tanh(KyaniteExpression X) : KyaniteExpression;
+
+    /// <summary>
+    /// Represents an integral.
+    /// </summary>
+    public record Integral(KyaniteExpression F, Variable X) : KyaniteExpression;
 }

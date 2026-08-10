@@ -10,7 +10,7 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Outputs the expression tree to LaTeX format.
         /// </summary>
-        public static string ToLaTeX(this KyaniteExpression expression, int pred = 0) => expression switch
+        public static string ToLaTeX(this KyaniteExpression expression, int pred = 0) => expression.Simplify() switch
         {
             Number(var x) => x.ToString("G6"),
             Variable(var x, var _) => EscapeVariable(x),
@@ -41,6 +41,8 @@ namespace Lavelle.Kyanite
 
             Derivative(var f, var x) when f is Variable => $@"\frac{{ d{f.ToLaTeX(0)} }}{{ d{x.ToLaTeX(0)} }}",
             Derivative(var f, var x) => $@"\frac{{ d }}{{ d{x.ToLaTeX(0)} }}\left( {f.ToLaTeX(0)} \right)",
+
+            Integral(var f, var x) => $@"\int {f.ToLaTeX(0)} \, d{x.ToLaTeX(0)}",
 
             _ => throw new Exception("Expression is not of any Kyanite-supplied type")
         };

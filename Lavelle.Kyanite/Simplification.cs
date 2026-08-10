@@ -38,6 +38,9 @@ namespace Lavelle.Kyanite
                 Cosh(var x) => x.SimplifyOnce().Cosh(),
                 Tanh(var x) => x.SimplifyOnce().Tanh(),
 
+                Derivative(var f, var x) => f.SimplifyOnce().D(x),
+                Integral(var f, var x) => f.SimplifyOnce().Int(x),
+
                 var x => x
             };
 
@@ -124,7 +127,6 @@ namespace Lavelle.Kyanite
                 Add(Multiply(Number(2), Pow(Sinh(var x), Number(2))), Number(1)) => (2 * x).Cosh(),
                 Add(Multiply(Number(2), Pow(Cosh(var x), Number(2))), Number(-1)) => (2 * x).Cosh(),
                 Add(Number(-1), Multiply(Number(2), Pow(Cosh(var x), Number(2)))) => (2 * x).Cosh(),
-
 
                 var x => x
             };

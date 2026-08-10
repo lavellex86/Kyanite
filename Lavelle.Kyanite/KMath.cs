@@ -62,5 +62,10 @@ namespace Lavelle.Kyanite
         /// Creates a new <c>Tanh</c> expression.
         /// </summary>
         public static Tanh Tanh(KyaniteExpression expression) => new Tanh(expression);
+
+        /// <summary>
+        /// Creates a new <c>Integral</c> expression.
+        /// </summary>
+        public static Integral Int(KyaniteExpression expression, Variable x) => new(expression, x);
     }
 }

@@ -43,6 +43,12 @@ var decay = N0 * KMath.Exp(-lambda * t);
 var solution = KMath.Solve(decay, N, t);
 Console.WriteLine("N = " + decay.ToLaTeX());
 Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
+
+Variable n = KMath.C("n"), R = KMath.C("R"), T = KMath.C("T"), V = KMath.V("V");
+var P = n * R * T / V;
+var W = P.Int(V);
+Console.WriteLine("P = " + P.ToLaTeX());
+Console.WriteLine("W = " + W.ToLaTeX());
 ```
 This computes acceleration from an equation of motion, the Euler-Lagrange equation from a Lagrangian, and the derivative of entropy with its maximum.
 You can view Kyanite's docs [here](https://lavelle.gitbook.io/kyanite-documentation/).

@@ -33,15 +33,13 @@ var dLdq = L.PD(q); // KyaniteExpression.PD(x) takes the partial derivative of t
 var dLdqdot = L.PD(qdot);
 KyaniteExpression el = dLdq - dLdqdot.D(t); // Euler-lagrange equation
 el = el.ESub(new() { [KMath.D(qdot, t)] = KMath.V("ddot{q}") }).Simplify();
-// Kyanite allows you to subsitute expressions using ESub; here we swap derivative out for a variable
-// To go the other way, and swap a variable out for an expression, use VSub
-// You can also simplify expressions with .Simplify
+// Kyanite allows you to subsitute expressions using Sub; here we swap derivative out for a variable
 Console.WriteLine("L = " + L.ToLaTeX());
 Console.WriteLine("EL = " + el.ToLaTeX() + " = 0");
 
 Variable p = KMath.V("p"), e = KMath.C("e");
 var H = -p * p.Log(e) - (1 - p) * (1 - p).Log(e); // Kyanite currently includes .Power, .Sin, .Cos, .Tan, and .Log
-var dHdp = H.D(p); // first derivative, simplifies automatically
+var dHdp = H.D(p); // first derivative
 Console.WriteLine("H = " + H.ToLaTeX());
 Console.WriteLine(@"\frac{dH}{dp} = " + dHdp.ToLaTeX());
 Console.WriteLine(@"p = 0.5 \implies \frac{dH}{dp} = " + dHdp.At(new() { ["p"] = 0.5, ["e"] = Math.E })); // .At evaluates an expression using the variable map given
@@ -52,6 +50,14 @@ var solution = KMath.Solve(decay, N, t); // solves, returning (lhs, rhs) in the 
 // sometimes an expression is to complex to fully solve for x, so it'll reduce as far as possible and give you what it can
 Console.WriteLine("N = " + decay.ToLaTeX());
 Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
+
+Variable n = KMath.C("n"), R = KMath.C("R"), T = KMath.C("T"), V = KMath.V("V");
+var P = n * R * T / V; 
+var W = P.Int(V); // we can integrate with .Int
+Console.WriteLine("P = " + P.ToLaTeX());
+Console.WriteLine("W = " + W.ToLaTeX());
+// expressions simplify on .ToLaTeX
+// to simplify manually, call .Simplify
 ```
 {% endcode %}
 

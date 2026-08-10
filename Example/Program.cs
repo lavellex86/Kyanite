@@ -13,7 +13,7 @@ var L = 0.5 * m * qdot.Pow(2) - 0.5 * k * q.Pow(2);
 var dLdq = L.PD(q);
 var dLdqdot = L.PD(qdot);
 KyaniteExpression el = dLdq - dLdqdot.D(t);
-el = el.ESub(new() { [KMath.D(qdot, t)] = KMath.V("ddot{q}") }).Simplify();
+el = el.Sub(new() { [KMath.D(qdot, t)] = KMath.V("ddot{q}") });
 Console.WriteLine("L = " + L.ToLaTeX());
 Console.WriteLine("EL = " + el.ToLaTeX() + " = 0");
 
@@ -29,3 +29,9 @@ var decay = N0 * KMath.Exp(-lambda * t);
 var solution = KMath.Solve(decay, N, t);
 Console.WriteLine("N = " + decay.ToLaTeX());
 Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
+
+Variable n = KMath.C("n"), R = KMath.C("R"), T = KMath.C("T"), V = KMath.V("V");
+var P = n * R * T / V;
+var W = P.Int(V);
+Console.WriteLine("P = " + P.ToLaTeX());
+Console.WriteLine("W = " + W.ToLaTeX());

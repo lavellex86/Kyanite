@@ -127,3 +127,11 @@ public record Tanh(KyaniteExpression X) : KyaniteExpression
 ```
 
 Represents a hyperbolic tangent operation.
+
+### Integral
+
+```csharp
+public record Integral(KyaniteExpression F, Variable X) : KyaniteExpression;
+```
+
+Represents an integral.
