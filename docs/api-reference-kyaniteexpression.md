@@ -203,15 +203,16 @@ Takes the hyperbolic tangent of the expression.
 public static KyaniteExpression D(this KyaniteExpression expression, Variable x, bool partial = false)
 ```
 
-Takes the derivative of `expression` w.r.t `x`. Takes the partial derivative if `partial` is true.
+Takes the derivative w.r.t `x`. Takes the partial derivative if `partial` is true.
 
 ***
 
 ```csharp
-public static KyaniteExpression PD(this KyaniteExpression expression, Variable x)
+public static KyaniteExpression PD(this KyaniteExpression expression, Variable x, List<Variable>? allowed = null)
 ```
 
 Takes the partial derivative of `expression` w.r.t `x`.
+Partial derivatives of variables within `allowed` will be kept and marked as partial derivatives.
 
 ***
 

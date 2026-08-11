@@ -28,7 +28,7 @@ namespace Lavelle.Kyanite
             (Cosh x, Cosh y) => SE(x.X, y.X),
             (Tanh x, Tanh y) => SE(x.X, y.X),
 
-            (Derivative x, Derivative y) => SE(x.F, y.F) && SE(x.X, y.X),
+            (Derivative x, Derivative y) => SE(x.F, y.F) && SE(x.X, y.X) && x.Partial == y.Partial,
             (Integral x, Integral y) => SE(x.F, y.F) && SE(x.X, y.X),
 
             _ => false
@@ -50,7 +50,7 @@ namespace Lavelle.Kyanite
             Tan(var y) => y.Has(x),
             Log(var y, var b) => y.Has(x) || b.Has(x),
 
-            Derivative(var f, var y) => f.Has(x) || y == x,
+            Derivative(var f, var y, _) => f.Has(x) || y == x,
             Integral(var f, var y) => f.Has(x) || y == x,
 
             _ => false

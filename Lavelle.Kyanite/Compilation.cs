@@ -104,7 +104,7 @@ namespace Lavelle.Kyanite
                     x.FindVariables(indices);
                     b.FindVariables(indices);
                     break;
-                case Derivative(var f, var x):
+                case Derivative(var f, var x, _):
                     f.FindVariables(indices);
                     x.FindVariables(indices);
                     break;

@@ -43,6 +43,14 @@ Creates a new symbolic `Derivative` expression.
 ***
 
 ```csharp
+public static Derivative PD(Variable f, Variable x)
+```
+
+Creates a new symbolic partial `Derivative` expression.
+
+***
+
+```csharp
 public static Sin Sin(KyaniteExpression expression)
 ```
 

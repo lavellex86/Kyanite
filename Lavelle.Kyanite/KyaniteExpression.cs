@@ -182,7 +182,7 @@ namespace Lavelle.Kyanite
     /// <summary>
     /// Represents a derivative operation.
     /// </summary>
-    public record Derivative(KyaniteExpression F, Variable X) : KyaniteExpression;
+    public record Derivative(KyaniteExpression F, Variable X, bool Partial) : KyaniteExpression;
 
     /// <summary>
     /// Represents a hyperbolic sine operation.

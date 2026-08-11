@@ -93,7 +93,7 @@ Represents a logarithm operation.
 ### Derivative
 
 ```csharp
-public record Derivative(KyaniteExpression f, Variable x) : KyaniteExpression
+public record Derivative(KyaniteExpression f, Variable x, bool Partial = false) : KyaniteExpression
 ```
 
 Represents a derivative operation.

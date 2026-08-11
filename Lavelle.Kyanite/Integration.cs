@@ -20,8 +20,12 @@ namespace Lavelle.Kyanite
                 Variable y when y.Constant && y != x => y * x,
 
                 Add(var a, var b) => a.Int(x) + b.Int(x),
-                Multiply(Variable a, var b) when a.Constant => a * b.Int(x),
-                Multiply(var a, Variable b) when b.Constant => b * a.Int(x),
+                Multiply => FlattenMultiply(expression) is var factors &&
+                    factors.Where(f => f.IsConstant(x)) is var constants &&
+                    factors.Where(f => !f.IsConstant(x)) is var nonConstants &&
+                    nonConstants.Any()
+                    ? RebuildMultiply([.. constants]) * RebuildMultiply([.. nonConstants]).Int(x)
+                    : new Integral(expression, x),
 
                 Pow(var y, var e) when y == x && e != -1 => x.Pow(e + 1) / (e + 1),
                 Pow(var y, var e) when y == x && e == -1 => x.Ln(),
@@ -36,12 +40,7 @@ namespace Lavelle.Kyanite
                 Cosh(var y) when y == x => x.Sinh(),
                 Tanh(var y) when y == x => x.Cosh().Ln(),
 
-                Multiply => FlattenMultiply(expression) is var factors &&
-                    factors.Where(f => f.IsConstant(x)) is var constants &&
-                    factors.Where(f => !f.IsConstant(x)) is var nonConstants &&
-                    nonConstants.Any()
-                    ? RebuildMultiply([.. constants]) * RebuildMultiply([.. nonConstants]).Int(x)
-                    : new Integral(expression, x),
+                Derivative(var f, var y, true) when y == x => f,
 
                 var y => new Integral(y, x)
             };
@@ -65,7 +64,7 @@ namespace Lavelle.Kyanite
             Log(var a, var b) => a.IsConstant(x) && b.IsConstant(x),
 
             Integral(var f, var v) => v != x && f.IsConstant(x),
-            Derivative(var f, var v) => v != x && f.IsConstant(x),
+            Derivative(var f, var v, _) => v != x && f.IsConstant(x),
 
             _ => false
         };

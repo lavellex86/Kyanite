@@ -39,8 +39,10 @@ namespace Lavelle.Kyanite
             Cosh(var x) => $@"\cosh \left( {x.ToLaTeX(0)} \right)",
             Tanh(var x) => $@"\tanh \left( {x.ToLaTeX(0)} \right)",
 
-            Derivative(var f, var x) when f is Variable => $@"\frac{{ d{f.ToLaTeX(0)} }}{{ d{x.ToLaTeX(0)} }}",
-            Derivative(var f, var x) => $@"\frac{{ d }}{{ d{x.ToLaTeX(0)} }}\left( {f.ToLaTeX(0)} \right)",
+            Derivative(var f, var x, false) when f is Variable => $@"\frac{{ d{f.ToLaTeX(0)} }}{{ d{x.ToLaTeX(0)} }}",
+            Derivative(var f, var x, false) => $@"\frac{{ d }}{{ d{x.ToLaTeX(0)} }}\left( {f.ToLaTeX(0)} \right)",
+            Derivative(var f, var x, true) when f is Variable => $@"\frac{{ \partial {f.ToLaTeX(0)} }}{{ \partial {x.ToLaTeX(0)} }}",
+            Derivative(var f, var x, true) => $@"\frac{{ \partial }}{{ \partial {x.ToLaTeX(0)} }}\left( {f.ToLaTeX(0)} \right)",
 
             Integral(var f, var x) => $@"\int {f.ToLaTeX(0)} \, d{x.ToLaTeX(0)}",
 

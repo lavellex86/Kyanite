@@ -26,7 +26,11 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Creates a new symbolic <c>Derivative</c> expression.
         /// </summary>
-        public static Derivative D(Variable f, Variable x) => new Derivative(f, x);
+        public static Derivative D(Variable f, Variable x) => new Derivative(f, x, false);
+        /// <summary>
+        /// Creates a new symbolic partial <c>Derivative</c> expression.
+        /// </summary>
+        public static Derivative PD(Variable f, Variable x) => new Derivative(f, x, true);
 
         /// <summary>
         /// Creates a new <c>Sin</c> expression.
