@@ -5,7 +5,7 @@
         /// <summary>
         /// Subsitutes an expression in for another expresion.
         /// </summary>
-        public static KyaniteExpression Sub(this KyaniteExpression expression, Dictionary<KyaniteExpression, KyaniteExpression> env) => expression switch
+        public static KyaniteExpression Sub(this KyaniteExpression expression, Dictionary<KyaniteExpression, KyaniteExpression> env) => expression.Simplify() switch
         {
             var x when env.ContainsKey(x) => env[x],
 
@@ -33,7 +33,7 @@
         /// <summary>
         /// Numerically evaluates an expression.
         /// </summary>
-        public static double Eval(this KyaniteExpression expression) => expression switch
+        public static double Eval(this KyaniteExpression expression) => expression.Simplify() switch
         {
             Number(var x) => x,
             Variable("pi", true) => Math.PI,
