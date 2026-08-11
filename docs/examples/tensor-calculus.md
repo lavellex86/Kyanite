@@ -16,5 +16,14 @@ var ddxdot_dtaudL = dLdxdot.D(tau);
 var EL = dLdx - ddxdot_dtaudL;
 var subbedEL = EL.Sub(new() { [KMath.D(g_munu, xdot_MU)] = 0 }); // g_munu is constnat w.r.t velocity, 
 Console.WriteLine("EL = " + subbedEL.ToLaTeX() + " = 0"); // final result
+// the genius of Einstein summation is that it turns what was a multiply (ab) into a sum(A^i B_i)
+// no new nodes are needed for differential geometry
+
+// we can also do more classical things
+Variable x_i = KMath.V("x_i"), x_j = KMath.V("x_j");
+var f_i = x_i.Sq() + 3;
+var jacobian = f_i.D(x_j);
+var subbedJacobian = jacobian.Sub(new() { [KMath.D(x_i, x_j)] = "delta_{ij}" }); // subsitute the identity
+Console.WriteLine("J_ij = " + subbedJacobian.ToLaTeX());
 ```
 {% endcode %}
