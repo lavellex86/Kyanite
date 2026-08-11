@@ -41,11 +41,11 @@ namespace Lavelle.Kyanite
         /// Takes the partial derivative w.r.t <paramref name="x"/>.
         /// Partial derivatives of variables within <paramref name="allowed"/> will be kept and marked as partial derivatives.
         /// </summary>
-        public static KyaniteExpression PD(this KyaniteExpression expression, Variable x, List<Variable> allowed) => expression.Simplify() switch
+        public static KyaniteExpression PD(this KyaniteExpression expression, Variable x, List<Variable>? allowed = null) => expression.Simplify() switch
         {
             Number _ => new Number(0),
             Variable v when v == x => new Number(1),
-            Variable v => v.Constant || !allowed.Contains(v) ? 0 : new Derivative(v, x, true),
+            Variable v => !allowed?.Contains(v) ?? true ? 0 : new Derivative(v, x, true),
 
             Add(var a, var b) => a.PD(x, allowed) + b.PD(x, allowed),
             Multiply(var a, var b) => a.PD(x, allowed) * b + a * b.PD(x, allowed),

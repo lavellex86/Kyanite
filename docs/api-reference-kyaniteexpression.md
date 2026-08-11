@@ -293,3 +293,11 @@ public static Func<Dictionary<string, double>, double> Compile(this KyaniteExpre
 ```
 
 Compiles an expression to a C# function.
+
+***
+
+```csharp
+public static KyaniteExpression Expand(this KyaniteExpression expression)
+```
+
+Expands an expression.

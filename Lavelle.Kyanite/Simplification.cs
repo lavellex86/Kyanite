@@ -52,6 +52,7 @@ namespace Lavelle.Kyanite
                 Multiply(var x, Number(1)) => x,
                 Multiply(Number(0), var _) => 0,
                 Multiply(var _, Number(0)) => 0,
+                Add(var a, var b) when a.SE(b) => 2 * a,
 
                 Multiply(Number(-1), Add(var a, var b)) => ((-1) * a) + ((-1) * b),
                 Multiply(Number(var c), Add(var a, var b)) => (c * a) + (c * b),
@@ -68,6 +69,7 @@ namespace Lavelle.Kyanite
                 Add(Number(var a), Number(var b)) => a + b,
                 Multiply(Number(var a), Number(var b)) => a * b,
                 Pow(Number(var a), Number(var b)) => Math.Pow(a, b),
+                Pow(Pow(var x, var a), var b) => x.Pow(a * b),
 
                 Add(Pow(Sin(var x1), Number(2)), Pow(Cos(var x2), Number(2))) when x1.SE(x2) => 1,
                 Add(Number(1), Multiply(Number(-1), Pow(Sin(var x), Number(2)))) => x.Cos().Sq(),
@@ -108,8 +110,6 @@ namespace Lavelle.Kyanite
                 Multiply(Number(var n), Log(var x, var b)) => x.Pow(n).Log(b),
                 Multiply(Log(var x, var b), Number(var n)) => x.Pow(n).Log(b),
                 Log(Number(1), var _) => 0,
-
-                Pow(Pow(var x, var a), var b) => x.Pow(a * b),
 
                 Multiply(Multiply(var x, Number(-1)), Number(-1)) => x,
 

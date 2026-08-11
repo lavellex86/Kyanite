@@ -23,7 +23,6 @@ var modulus = (Re(z1).Sq() + Im(z1).Sq()).Sqrt(); // and the modulus
 // to get rid of them, we just sub i^2 = -1
 var env = new Dictionary<KyaniteExpression, KyaniteExpression>() { [KMath.C("i").Sq()] = -1 };
 var simplifiedProduct = product.Sub(env);
-var simplifiedModulus = modulus.Sub(env);
 
 Console.WriteLine("z1 = " + z1.ToLaTeX());
 Console.WriteLine("z2 = " + z2.ToLaTeX());

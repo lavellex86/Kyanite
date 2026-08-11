@@ -1,23 +1,28 @@
 ﻿using Lavelle.Kyanite;
 
-Variable g_munu = KMath.V("g_{mu nu}"), xdot_MU = KMath.C("dot{x}^{mu}"), xdot_NU = KMath.C("dot{x}^{nu}"), x_MU = KMath.C("x^{mu}"), tau = KMath.C("tau");
-// as a convention, raised indices can be represented in uppercase and lowered indices in lowercase
+Variable a = KMath.V("a"), b = KMath.V("b"), c = KMath.V("c"), d = KMath.V("d");
+// we can represent a complex number using a constant i
+var z1 = a + b["i"]; // strings convert to constant variables
+var z2 = c + d["i"]; // this is using the juxtaposition multiplication convention; a[b] = a * b
+var sum = z1 + z2; // we can add and multiply easily
+var product = z1[z2].Expand(); // expand so it does out the multiplication
 
-// Lagrangian for free particle
-var L = g_munu[xdot_MU][xdot_NU];
-var dLdx = L.D(x_MU);
-var dLdxdot = L.D(xdot_MU); // using derivative to capture all derivatives, later we'll sub out the ones we don't want
-var ddxdot_dtaudL = dLdxdot.D(tau);
+// define Im(z) = partial z / partial i, the coefficient
+KyaniteExpression Im(KyaniteExpression z) => z.PD("i");
+// Re is then just z - Im(z) i
+KyaniteExpression Re(KyaniteExpression z) => z - Im(z)["i"];
 
-var EL = dLdx - ddxdot_dtaudL;
-var subbedEL = EL.Sub(new() { [KMath.D(g_munu, xdot_MU)] = 0 }); // g_munu is constnat w.r.t velocity, 
-Console.WriteLine("EL = " + subbedEL.ToLaTeX() + " = 0"); // final result
-// the genius of Einstein summation is that it turns what was a multiply (ab) into a sum(A^i B_i)
-// no new nodes are needed for differential geometry
+var conjugate = Re(z1) - Im(z1)["i"]; // we can take the conjugate
+var modulus = (Re(z1).Sq() + Im(z1).Sq()).Sqrt(); // and the modulus
 
-// we can also do more classical things
-Variable x_i = KMath.V("x_i"), x_j = KMath.V("x_j");
-var f_i = x_i.Sq() + 3;
-var jacobian = f_i.D(x_j);
-var subbedJacobian = jacobian.Sub(new() { [KMath.D(x_i, x_j)] = "delta_{ij}" }); // subsitute the identity
-Console.WriteLine("J_ij = " + subbedJacobian.ToLaTeX());
+// throughout all of these, we'll end up with i^2 terms
+// to get rid of them, we just sub i^2 = -1
+var env = new Dictionary<KyaniteExpression, KyaniteExpression>() { [KMath.C("i").Sq()] = -1 };
+var simplifiedProduct = product.Sub(env);
+
+Console.WriteLine("z1 = " + z1.ToLaTeX());
+Console.WriteLine("z2 = " + z2.ToLaTeX());
+Console.WriteLine("sum = " + sum.ToLaTeX());
+Console.WriteLine("product = " + simplifiedProduct.ToLaTeX());
+Console.WriteLine("conjugate = " + conjugate.ToLaTeX());
+Console.WriteLine("modulus = " + modulus.ToLaTeX());

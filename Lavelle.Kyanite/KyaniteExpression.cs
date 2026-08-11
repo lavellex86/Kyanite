@@ -124,7 +124,7 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Converts a `string` to a `Variable`.
         /// </summary>
-        public static implicit operator KyaniteExpression(string x) => new Variable(x);
+        public static implicit operator KyaniteExpression(string x) => new Variable(x, true);
     }
 
     /// <summary>
@@ -145,7 +145,7 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Converts a `string` to a `Variable`.
         /// </summary>
-        public static implicit operator Variable(string x) => new Variable(x);
+        public static implicit operator Variable(string x) => new Variable(x, true);
     }
 
     /// <summary>
