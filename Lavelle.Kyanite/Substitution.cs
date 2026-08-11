@@ -48,7 +48,7 @@
             Tan(var x) => Math.Tan(x.Eval()),
             Log(var x, var b) => Math.Log(x.Eval(), b.Eval()),
 
-            _ => throw new Exception("Unbound variables are present in the expression"),
+            var x => throw new Exception("Unbound variables are present in the expression: " + x.ToLaTeX()),
         };
 
         /// <summary>
@@ -62,7 +62,7 @@
                 ["pi"] = Math.PI
             }).Simplify();
             Dictionary<KyaniteExpression, KyaniteExpression> env = [];
-            foreach (var (v, n) in values) env[v] = n;
+            foreach (var (v, n) in values) env[KMath.V(v)] = n;
             return expression.Sub(env).Eval();
         }
     }

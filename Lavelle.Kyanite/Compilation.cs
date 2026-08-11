@@ -33,9 +33,9 @@ namespace Lavelle.Kyanite
                 var missing = indices.Keys.Except(parameters.Keys.Select(x => new Variable(x, false))).ToList();
                 if (missing.Count > 0)
                     throw new ArgumentException($"Missing variables: {string.Join(", ", missing.Select(v => v.Name))}");
-                foreach (var variable in parameters.Keys) { if (!indices.ContainsKey(variable)) throw new Exception("Extra variable: " + variable); }
+                foreach (var variable in parameters.Keys) { if (!indices.ContainsKey(KMath.V(variable))) throw new Exception("Extra variable: " + variable); }
 
-                var sorted = parameters.OrderBy(x => indices[x.Key]).ToDictionary();
+                var sorted = parameters.OrderBy(x => indices[KMath.V(x.Key)]).ToDictionary();
                 return compiled([.. sorted.Values]);
             }
 

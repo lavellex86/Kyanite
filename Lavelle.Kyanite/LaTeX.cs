@@ -74,42 +74,37 @@ namespace Lavelle.Kyanite
             return false;
         }
 
-        private static string EscapeVariable(string name) => name switch
+        private static string EscapeVariable(string name)
         {
-            "pi" => @"\pi",
-            "alpha" => @"\alpha",
-            "beta" => @"\beta",
-            "gamma" => @"\gamma",
-            "delta" => @"\delta",
-            "epsilon" => @"\epsilon",
-            "theta" => @"\theta",
-            "lambda" => @"\lambda",
-            "mu" => @"\mu",
-            "sigma" => @"\sigma",
-            "omega" => @"\omega",
-            "phi" => @"\phi",
-            "psi" => @"\psi",
-            "rho" => @"\rho",
-            "tau" => @"\tau",
-            "eta" => @"\eta",
-            "nu" => @"\nu",
-            "xi" => @"\xi",
-            "zeta" => @"\zeta",
-            "Pi" => @"\Pi",
-            "Gamma" => @"\Gamma",
-            "Delta" => @"\Delta",
-            "Theta" => @"\Theta",
-            "Lambda" => @"\Lambda",
-            "Sigma" => @"\Sigma",
-            "Omega" => @"\Omega",
-            "Phi" => @"\Phi",
-            "Psi" => @"\Psi",
-            "Xi" => @"\Xi",
-            "Upsilon" => @"\Upsilon",
-            _ when name.StartsWith("dot") 
-                || name.StartsWith("bar")
-                || name.StartsWith("ddot") => $@"\{name}",
-            _ => name
-        };
+            var prefixes = new string[] { "ddot", "dot", "bar" }; // ddot before dot!
+
+            foreach (var prefix in prefixes)
+            {
+                if (name.StartsWith(prefix))
+                {
+                    name = $@"\{prefix}{{{name[prefix.Length..]}}}";
+                    break;
+                }
+            }
+
+            var greeks = new Dictionary<string, string>
+            {
+                {"pi", @"\pi"}, {"alpha", @"\alpha"}, {"beta", @"\beta"},
+                {"gamma", @"\gamma"}, {"delta", @"\delta"}, {"epsilon", @"\epsilon"},
+                {"theta", @"\theta"}, {"lambda", @"\lambda"}, {"mu", @"\mu"},
+                {"sigma", @"\sigma"}, {"omega", @"\omega"}, {"phi", @"\phi"},
+                {"psi", @"\psi"}, {"rho", @"\rho"}, {"tau", @"\tau"},
+                {"eta", @"\eta"}, {"nu", @"\nu"}, {"xi", @"\xi"},
+                {"zeta", @"\zeta"}, {"Pi", @"\Pi"}, {"Gamma", @"\Gamma"},
+                {"Delta", @"\Delta"}, {"Theta", @"\Theta"}, {"Lambda", @"\Lambda"},
+                {"Sigma", @"\Sigma"}, {"Omega", @"\Omega"}, {"Phi", @"\Phi"},
+                {"Psi", @"\Psi"}, {"Xi", @"\Xi"}, {"Upsilon", @"\Upsilon"}
+            };
+
+            foreach (var (key, val) in greeks)
+                name = name.Replace(key, val);
+
+            return name;
+        }
     }
 }
