@@ -16,6 +16,7 @@ Variable x0 = C("x_0"), v0 = C("v_0"), g = C("g"), t = V("t");
 // - V, which creates a new variable
 // - C, which creates a new constant
 // - D, which creates a new symbolic derivative
+// - Int, which creates a new symbolic integral
 // Variable inherits from the base class KyaniteExpression
 
 var x = x0 + v0 * t + 0.5 * g * t.Sq();

@@ -18,10 +18,11 @@ using Lavelle.Kyanite;
 using static Lavelle.Kyanite.KMath;
 
 Variable x0 = C("x_0"), v0 = C("v_0"), g = C("g"), t = V("t");
-// the KMath class has three utilities for creating symbols:
+// the KMath class has four utilities for creating symbols:
 // - V, which creates a new variable
 // - C, which creates a new constant
 // - D, which creates a new symbolic derivative
+// - Int, which creates a new symbolic integral
 // Variable inherits from the base class KyaniteExpression
 
 var x = x0 + v0 * t + 0.5 * g * t.Sq();
@@ -83,5 +84,4 @@ You can view Kyanite's docs [here](https://lavelle.gitbook.io/kyanite-documentat
 ## TODOs
 - LaTeX cleanup
 - Expand method
-- Summation and tensors
 - Factoring & polynomial standard form
