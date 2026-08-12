@@ -77,4 +77,4 @@ Console.WriteLine("root = " + root);
 ```
 {% endcode %}
 
-For more detail on any specific method, check out the API reference.
+For more detail on any specific method, check out the API reference. For some more examples of Kyanite scripts, check out the [Examples](https://app.gitbook.com/s/QKU1AcyqATLn4jzuN591/examples "mention").
