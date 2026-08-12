@@ -11,10 +11,6 @@ namespace Lavelle.Kyanite
         /// <summary>
         /// Solves for <paramref name="x"/> in an equation <paramref name="l"/> = <paramref name="r"/>.
         /// </summary>
-        /// <param name="l"></param>
-        /// <param name="r"></param>
-        /// <param name="x"></param>
-        /// <returns></returns>
         public static (KyaniteExpression L, KyaniteExpression R) Solve(KyaniteExpression l, KyaniteExpression r, KyaniteExpression x) => l switch
         {
             var y when x.SE(y) => (x, r.Simplify()),
@@ -28,6 +24,9 @@ namespace Lavelle.Kyanite
             Pow(var y, var e) when e.Has(x) => Solve(e, r.Log(y), x),
 
             Log(var y, var b) when y.Has(x) => Solve(y, b.Pow(r), x),
+
+            Derivative(var f, var y, _) when f.Has(x) => Solve(f, r.Int(y), x),
+            Integral(var f, var y) when f.Has(x) => Solve(f, r.D(y), x),
 
             _ => (l.Simplify(), r.Simplify())
         };
