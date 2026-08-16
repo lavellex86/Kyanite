@@ -49,6 +49,8 @@ namespace Lavelle.Kyanite
 
         private static bool IsConstant(this KyaniteExpression expression, KyaniteExpression x) => expression switch
         {
+
+            Function(_, var parameters) => parameters.All(y => y.IsConstant(x)),
             Number(_) => true,
             Variable v => v.Constant || v != x,
             Add(var a, var b) => a.IsConstant(x) && b.IsConstant(x),
@@ -65,8 +67,6 @@ namespace Lavelle.Kyanite
 
             Integral(var f, var v) => v != x && f.IsConstant(x),
             Derivative(var f, var v, _) => v != x && f.IsConstant(x),
-
-            Function(_, var parameters) => parameters.All(y => y.IsConstant(x)),
 
             _ => false
         };

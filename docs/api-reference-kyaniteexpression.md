@@ -309,3 +309,11 @@ public static KyaniteExpression Apply(this KyaniteExpression expression, string 
 ```
 
 Applies a rule to all functions with names containing `name`.
+
+***
+
+```csharp
+public static KyaniteExpression Swap(this KyaniteExpression expression, Func<KyaniteExpression, bool> predicate, Func<KyaniteExpression, KyaniteExpression> swapper)
+```
+
+Swaps expressions using a predicate and swapper. When the predicate matches, the swapper will be run on the expression matched.

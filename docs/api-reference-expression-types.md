@@ -143,7 +143,7 @@ Represents an integral.
 ### Function
 
 ```csharp
-public record Function(string Name, List<KyaniteExpression> Parameters) : KyaniteExpression;
+public record Function(string Name, List<KyaniteExpression> Parameters) : Variable(Name);
 ```
 
 Represents a function.

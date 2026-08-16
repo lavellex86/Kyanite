@@ -71,30 +71,31 @@
         }
 
         /// <summary>
-        /// Applies a rule to all functions with names containing <paramref name="name"/>.
+        /// Swaps expressions using a predicate and swapper. When the predicate matches, the swapper will be run on the expression matched.
         /// </summary>
-        public static KyaniteExpression Apply(this KyaniteExpression expression, string name, Func<List<KyaniteExpression>, KyaniteExpression> rule) => expression switch
+        public static KyaniteExpression Swap(this KyaniteExpression expression, Func<KyaniteExpression, bool> predicate, Func<KyaniteExpression, KyaniteExpression> swapper) => expression switch
         {
-            Function(var name2, var parameters) when name2.Contains(name) => rule(parameters),
+            var x when predicate(x) => swapper(x),
 
-            Add(var a, var b) => a.Apply(name, rule) + b.Apply(name, rule),
-            Multiply(var a, var b) => a.Apply(name, rule) * b.Apply(name, rule),
+            Add(var a, var b) => a.Swap(predicate, swapper) + b.Swap(predicate, swapper),
+            Multiply(var a, var b) => a.Swap(predicate, swapper) * b.Swap(predicate, swapper),
 
-            Pow(var x, var e) => x.Apply(name, rule).Pow(e.Apply(name, rule)),
-            Sin(var x) => x.Apply(name, rule).Sin(),
-            Cos(var x) => x.Apply(name, rule).Cos(),
-            Tan(var x) => x.Apply(name, rule).Tan(),
-            Log(var x, var b) => x.Apply(name, rule).Log(b.Apply(name, rule)),
-            Sinh(var x) => x.Apply(name, rule).Sinh(),
-            Cosh(var x) => x.Apply(name, rule).Cosh(),
-            Tanh(var x) => x.Apply(name, rule).Tanh(),
-
-            Derivative(var f, var x, true) => new Derivative(f.Apply(name, rule), x, true),
-            Derivative(var f, var x, false) => f.Apply(name, rule).D(x),
-
-            Integral(var f, var v) => f.Apply(name, rule).Int(v),
+            Pow(var x, var e) => x.Swap(predicate, swapper).Pow(e.Swap(predicate, swapper)),
+            Sin(var x) => x.Swap(predicate, swapper).Sin(),
+            Cos(var x) => x.Swap(predicate, swapper).Cos(),
+            Tan(var x) => x.Swap(predicate, swapper).Tan(),
+            Log(var x, var b) => x.Swap(predicate, swapper).Log(b.Swap(predicate, swapper)),
+            Sinh(var x) => x.Swap(predicate, swapper).Sinh(),
+            Cosh(var x) => x.Swap(predicate, swapper).Cosh(),
+            Tanh(var x) => x.Swap(predicate, swapper).Tanh(),
 
             var x => x
         };
+
+        /// <summary>
+        /// Applies a rule to all functions with names containing <c>name</c>.
+        /// </summary>
+        public static KyaniteExpression Apply(this KyaniteExpression expression, string name, Func<List<KyaniteExpression>, KyaniteExpression> rule) =>
+            expression.Swap(ex => ex is Function f && f.Name.Contains(name), ex => rule(((Function)ex).Parameters));
     }
 }

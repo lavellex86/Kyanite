@@ -12,9 +12,9 @@ namespace Lavelle.Kyanite
         /// </summary>
         public static string ToLaTeX(this KyaniteExpression expression, int pred = 0) => expression.Simplify() switch
         {
+            Function(var name, _) => EscapeVariable(name),
             Number(var x) => x.ToString("G6"),
             Variable(var x, var _) => EscapeVariable(x),
-            Function(var name, _) => EscapeVariable(name),
 
             Add(var a, var b) when Negated(b, out var trueB) => P($"{a.ToLaTeX(1)} - {trueB.ToLaTeX(1)}", pred > 1),
             Add(var a, var b) => P($"{a.ToLaTeX(1)} + {b.ToLaTeX(1)}", pred > 1),

@@ -9,7 +9,8 @@ Kyanite is a CAS (Computer Algebra System) library that handles:
 - subsitution
 - solving equations
 - symbolic integration
-- JIT compilation of expressions
+- lambda compilation of expressions
+- surgical editing of expression trees
 
 The library is designed for quick usage and compact scripts, with QoL utilities already supplied. 
 The following is an example of a Kyanite script:
@@ -74,7 +75,7 @@ var dfdy = f.D(y);
 var compiledF = f.Compile(); // .Compile turns an expression into a C# function
 var compiledDerivative = dfdy.Compile(); // this means we can write a math expression and easily generate C# code 
 var root = 1.0; // finding the roots with the compiled method
-for (int i = 0; i < 100; i++) // unlike .At, which uses the symbolic tree, .Compile uses JIT compilation
+for (int i = 0; i < 100; i++) // unlike .At, which uses the symbolic tree, .Compile uses IL compilation
     root -= compiledF(new() { ["y"] = root }) / compiledDerivative(new() { ["y"] = root }); // this makes it fast in hot loops like this
 // passing in arguments is done in the same way as .At- dictionary of variable names to doubles
 Console.WriteLine("f(y) = " + f.ToLaTeX());
@@ -83,5 +84,4 @@ Console.WriteLine("root = " + root);
 ```
 You can view Kyanite's docs [here](https://lavelle.gitbook.io/kyanite-documentation/).
 ## TODOs
-- LaTeX cleanup
-- Factoring & polynomial standard form
+- Factoring

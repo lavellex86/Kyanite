@@ -13,6 +13,7 @@ namespace Lavelle.Kyanite
         /// </summary>
         public static bool SE(this KyaniteExpression a, KyaniteExpression b) => (a, b) switch
         {
+            (Function f, Function g) => f.Parameters.All(g.Parameters.Contains) && f.Name == g.Name,
             (Number(var x), Number(var y)) => x == y,
             (Variable(var x, _), Variable(var y, _)) => x == y,
 
@@ -30,8 +31,6 @@ namespace Lavelle.Kyanite
 
             (Derivative x, Derivative y) => SE(x.F, y.F) && SE(x.X, y.X) && x.Partial == y.Partial,
             (Integral x, Integral y) => SE(x.F, y.F) && SE(x.X, y.X),
-
-            (Function f, Function g) => f.Parameters.All(x => g.Parameters.Contains(x)) && f.Name == g.Name,
 
             _ => false
         };

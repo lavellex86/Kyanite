@@ -205,5 +205,5 @@ namespace Lavelle.Kyanite
     /// <summary>
     /// Represents a function.
     /// </summary>
-    public record Function(string Name, List<KyaniteExpression> Parameters) : KyaniteExpression;
+    public record Function(string Name, List<KyaniteExpression> Parameters) : Variable(Name);
 }
