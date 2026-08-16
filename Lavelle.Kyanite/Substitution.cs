@@ -21,8 +21,10 @@
             Cosh(var x) => x.Sub(env).Cosh(),
             Tanh(var x) => x.Sub(env).Tanh(),
 
-            Derivative(var f, var x, _) when env.ContainsKey(f) => env[f].D(x),
-            Derivative(var f, var x, _) => f.Sub(env).D(x),
+            Derivative(var f, var x, true) when env.ContainsKey(f) => new Derivative(env[f], x, true),
+            Derivative(var f, var x, true) => new Derivative(f.Sub(env), x, true),
+            Derivative(var f, var x, false) when env.ContainsKey(f) => env[f].D(x),
+            Derivative(var f, var x, false) => f.Sub(env).D(x),
 
             Integral(var f, var v) when env.ContainsKey(f) => env[f].Int(v),
             Integral(var f, var v) => f.Sub(env).Int(v),

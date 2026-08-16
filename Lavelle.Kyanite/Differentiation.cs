@@ -62,8 +62,26 @@ namespace Lavelle.Kyanite
 
             var y => new Derivative(y, x, true)
         };
-        
 
-        
+        public static KyaniteExpression EvalPDs(this KyaniteExpression expression, List<Variable> globalList) => expression switch
+        {
+            Add(var a, var b) => a.EvalPDs(globalList) + b.EvalPDs(globalList),
+            Multiply(var a, var b) => a.EvalPDs(globalList) * b.EvalPDs(globalList),
+
+            Pow(var x, var e) => x.EvalPDs(globalList).Pow(e.EvalPDs(globalList)),
+            Sin(var x) => x.EvalPDs(globalList).Sin(),
+            Cos(var x) => x.EvalPDs(globalList).Cos(),
+            Tan(var x) => x.EvalPDs(globalList).Tan(),
+            Log(var x, var b) => x.EvalPDs(globalList).Log(b.EvalPDs(globalList)),
+            Sinh(var x) => x.EvalPDs(globalList).Sinh(),
+            Cosh(var x) => x.EvalPDs(globalList).Cosh(),
+            Tanh(var x) => x.EvalPDs(globalList).Tanh(),
+
+            Derivative d when d.Partial => d.F.EvalPDs(globalList).PD(d.X, globalList),
+            Derivative(var f, var x, false) => f.EvalPDs(globalList).D(x),
+            Integral(var f, var x) => f.EvalPDs(globalList).Int(x),
+
+            var x => x
+        };
     }
 }

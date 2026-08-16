@@ -40,9 +40,12 @@ namespace Lavelle.Kyanite
             Tanh(var x) => $@"\tanh \left( {x.ToLaTeX(0)} \right)",
 
             Derivative(Derivative(var f, var x, false), var y, false) when x == y && f is Variable => $@"\frac{{ d^{{2}}{f.ToLaTeX(0)} }}{{ d{x.ToLaTeX(0)}^{{2}} }}",
-            Derivative(Derivative(var f, var x, false), var y, false) when x == y && f is Variable => $@"\frac{{ \partial^{{2}}{f.ToLaTeX(0)} }}{{ \partial {x.ToLaTeX(0)}^{{2}} }}",
+            Derivative(Derivative(var f, var x, true), var y, true) when x == y && f is Variable => $@"\frac{{ \partial^{{2}}{f.ToLaTeX(0)} }}{{ \partial {x.ToLaTeX(0)}^{{2}} }}",
             Derivative(Derivative(var f, var x, false), var y, false) when x == y => $@"\frac{{ d^{{2}} }}{{ d{x.ToLaTeX(0)}^{{2}} }}\left( {f.ToLaTeX(0)} \right)",
-            Derivative(Derivative(var f, var x, false), var y, false) when x == y => $@"\frac{{ \partial^{{2}} }}{{ \partial {x.ToLaTeX(0)}^{{2}} }}\left( {f.ToLaTeX(0)} \right)",
+            Derivative(Derivative(var f, var x, true), var y, true) when x == y => $@"\frac{{ \partial^{{2}} }}{{ \partial {x.ToLaTeX(0)}^{{2}} }}\left( {f.ToLaTeX(0)} \right)",
+
+            Derivative(Derivative(var f, var x, true), var y, true) when f is Variable => $@"\frac{{ \partial^{{2}}{f.ToLaTeX(0)} }}{{\partial {y.ToLaTeX()} \partial {x.ToLaTeX(0)}}}",
+            Derivative(Derivative(var f, var x, true), var y, true) => $@"\frac{{ \partial^{{2}} }}{{\partial {y.ToLaTeX()} \partial {x.ToLaTeX(0)}}}\left( {f.ToLaTeX(0)} \right)",
 
             Derivative(var f, var x, false) when f is Variable => $@"\frac{{ d{f.ToLaTeX(0)} }}{{ d{x.ToLaTeX(0)} }}",
             Derivative(var f, var x, false) => $@"\frac{{ d }}{{ d{x.ToLaTeX(0)} }}\left( {f.ToLaTeX(0)} \right)",
@@ -81,7 +84,7 @@ namespace Lavelle.Kyanite
 
         private static string EscapeVariable(string name)
         {
-            var prefixes = new string[] { "ddot", "dot", "bar" }; // ddot before dot!
+            var prefixes = new string[] { "ddot", "dot", "bar" }; 
 
             foreach (var prefix in prefixes)
             {
@@ -94,21 +97,28 @@ namespace Lavelle.Kyanite
 
             var greeks = new Dictionary<string, string>
             {
+                {"Theta", @"\Theta"}, {"theta", @"\theta"}, 
                 {"pi", @"\pi"}, {"alpha", @"\alpha"}, {"beta", @"\beta"},
                 {"gamma", @"\gamma"}, {"delta", @"\delta"}, {"epsilon", @"\epsilon"},
-                {"theta", @"\theta"}, {"lambda", @"\lambda"}, {"mu", @"\mu"},
+                 {"lambda", @"\lambda"}, {"mu", @"\mu"},
                 {"sigma", @"\sigma"}, {"omega", @"\omega"}, {"phi", @"\phi"},
                 {"psi", @"\psi"}, {"rho", @"\rho"}, {"tau", @"\tau"},
                 {"eta", @"\eta"}, {"nu", @"\nu"}, {"xi", @"\xi"},
                 {"zeta", @"\zeta"}, {"Pi", @"\Pi"}, {"Gamma", @"\Gamma"},
-                {"Delta", @"\Delta"}, {"Theta", @"\Theta"}, {"Lambda", @"\Lambda"},
+                {"Delta", @"\Delta"},  {"Lambda", @"\Lambda"},
                 {"Sigma", @"\Sigma"}, {"Omega", @"\Omega"}, {"Phi", @"\Phi"},
                 {"Psi", @"\Psi"}, {"Xi", @"\Xi"}, {"Upsilon", @"\Upsilon"}
             };
 
-            foreach (var (key, val) in greeks)
-                name = name.Replace(key, val);
+            var subscriptIndex = name.IndexOf('_');
+            var superscriptIndex = name.IndexOf('^');
+            var variable = name.Substring(0, superscriptIndex >= 0 ? superscriptIndex : name.Length);
+            variable = variable.Substring(0, subscriptIndex >= 0 ? subscriptIndex : variable.Length);
 
+            var bracketIndex = variable.IndexOf('{');
+            variable = variable[(bracketIndex >= 0 ? bracketIndex : 0)..].Replace("}", "");
+
+            if (greeks.TryGetValue(variable, out var escaped)) name = name.Replace(variable, escaped);
             return name;
         }
     }

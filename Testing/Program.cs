@@ -1,66 +1,32 @@
 ﻿using Lavelle.Kyanite;
 
-Variable x0 = KMath.C("x_0"), v0 = KMath.C("v_0"), g = KMath.C("g"), t = KMath.V("t");
-// the KMath class has three utilities for creating symbols:
-// - V, which creates a new variable
-// - C, which creates a new constant
-// - D, which creates a new symbolic derivative
-// - Int, which creates a new symbolic integral
-// Variable inherits from the base class KyaniteExpression
+Variable Omega_ijk = KMath.V("Omega_{ijk}"), Omega_IJK = KMath.V("Omega^{ijk}");
+Variable Lambda_ij = KMath.V("Lambda_{ij}"), Lambda_IJ = KMath.V("Lambda^{ij}");
+Variable Theta_ij = KMath.V("Theta_{ij}"), Theta_IJ = KMath.V("Theta^{ij}");
+Variable Theta_NA = KMath.V("Theta^{na}"), Omega_NAB = KMath.V("Omega^{nab}");
+Variable Omega_KLL = KMath.V("Omega^{kll}");
+Variable x_a = KMath.V("x_a"), x_b = KMath.V("x_b");
+Variable Lambda_IN = KMath.V("Lambda^{in}"), Lambda_AJ = KMath.V("Lambda^{aj}");
+Variable delta_iN = KMath.V("delta_{i}^{n}"), delta_jA = KMath.V("delta_{j}^{a}"), delta_kB = KMath.V("delta_{k}^{b}");
+Variable delta_nI = KMath.V("delta_{n}^{i}"), delta_aJ = KMath.V("delta_{a}^{j}"), delta_bK = KMath.V("delta_{b}^{k}");
+Variable delta_nK = KMath.V("delta_{n}^{k}"), delta_aL = KMath.V("delta_{a}^{l}"), delta_bL = KMath.V("delta_{b}^{l}");
+var subs = new Dictionary<KyaniteExpression, KyaniteExpression>()
+{
+    [KMath.PD(Lambda_IJ, Theta_NA)] = -Lambda_IN[Lambda_AJ],
+    [KMath.PD(Omega_ijk, Omega_NAB)] = delta_iN[delta_jA][delta_kB],
+    [KMath.PD(Omega_IJK, Omega_NAB)] = delta_nI[delta_aJ][delta_bK],
+    [KMath.PD(Omega_KLL, Omega_NAB)] = delta_nK[delta_aL][delta_bL],
+    [KMath.PD(Theta_ij, Theta_NA)] = delta_iN[delta_jA],
+    [KMath.PD(Theta_IJ, Theta_NA)] = delta_nI[delta_aJ],
+};
 
-var x = x0 + v0[t] + 0.5 * g[t.Sq()];
-// KyaniteExpression objects have operators and methods attached, so expressions can be written easily
-// this is x0 + v0 t + 0.5 g t^2
-var v = x.D(t); // KyaniteExpression.D(x) takes the derivative of the expression w.r.t x
-var a = v.D(t);
-Console.WriteLine("x = " + x.ToLaTeX()); // we can output to LaTeX too
-Console.WriteLine("v = " + v.ToLaTeX());
-Console.WriteLine("a = " + a.ToLaTeX());
+var list = new List<Variable>([Omega_ijk, Omega_IJK, Lambda_ij, Lambda_IJ, Theta_NA, Omega_KLL, Lambda_IN, Lambda_AJ, Theta_ij, Theta_IJ]);
+var thetaList = new List<Variable>([Lambda_ij, Lambda_IJ, Theta_ij, Theta_IJ]);
+var omegaList = new List<Variable>([Omega_ijk, Omega_IJK, Omega_KLL]);
 
-Variable q = KMath.V("q"), qdot = KMath.V("dot{q}"), m = KMath.C("m"), k = KMath.C("k");
-// variable names should be written as you'd like to see them in latex; however, to increase readability, names like dot{x} and bar{x} will be escaped automatically into \dot{x} and \bar{x}
-// greek letters will also be escaped, so you can write "mu_{nu}" instead of "\mu_{\nu}"
-var L = 0.5 * m[qdot.Sq()] - 0.5 * k[q.Sq()]; // lagrangian, 0.5 m qdot^2 - 0.5 k q^2
-var dLdq = L.PD(q); // KyaniteExpression.PD(x) takes the partial derivative of the expression w.r.t x
-var dLdqdot = L.PD(qdot);
-KyaniteExpression el = dLdq - dLdqdot.D(t); // Euler-lagrange equation
-el = el.Sub(new() { [KMath.D(qdot, t)] = KMath.V("ddot{q}") }).Simplify();
-// Kyanite allows you to subsitute expressions using Sub; here we swap derivative out for a variable
-Console.WriteLine("L = " + L.ToLaTeX());
-Console.WriteLine("EL = " + el.ToLaTeX() + " = 0");
-
-Variable p = KMath.V("p");
-var H = -p[p.Log("e")] - (1 - p)[(1 - p).Log("e")]; // strings are converted to constant variables
-// Kyanite currently includes .Power, .Sin, .Cos, .Tan, and .Log
-var dHdp = H.D(p); // first derivative
-Console.WriteLine("H = " + H.ToLaTeX());
-Console.WriteLine(@"\frac{dH}{dp} = " + dHdp.ToLaTeX());
-Console.WriteLine(@"p = 0.5 \implies \frac{dH}{dp} = " + dHdp.At(new() { ["p"] = 0.5 })); // .At evaluates an expression using the variable name -> value map given
-
-Variable N = KMath.C("N"), N0 = KMath.C("N_0"), lambda = KMath.C("lambda");
-var decay = N0[KMath.Exp(-lambda * t)]; // exponential decay, N = N_0 e^{-lambda t}
-var solution = KMath.Solve(decay, N, t); // solves, returning (lhs, rhs) in the form f(x) = g
-// sometimes an expression is to complex to fully solve for x, so it'll reduce as far as possible and give you what it can
-Console.WriteLine("N = " + decay.ToLaTeX());
-Console.WriteLine(solution.L.ToLaTeX() + " = " + solution.R.ToLaTeX());
-
-Variable n = KMath.C("n"), R = KMath.C("R"), T = KMath.C("T"), V = KMath.V("V");
-var P = n[R][T] / V; // perfect gas, P = n R T / V
-var W = P.Int(V); // we can integrate with .Int
-Console.WriteLine("P = " + P.ToLaTeX());
-Console.WriteLine("W = " + W.ToLaTeX());
-// expressions simplify on .ToLaTeX
-// to simplify manually, call .Simplify
-
-Variable y = KMath.V("y");
-var f = y.Cos() - y;
-var dfdy = f.D(y);
-var compiledF = f.Compile(); // .Compile turns an expression into a C# function
-var compiledDerivative = dfdy.Compile(); // this means we can write a math expression and easily generate C# code 
-var root = 1.0; // finding the roots with the compiled method
-for (int i = 0; i < 100; i++) // unlike .At, which uses the symbolic tree, .Compile uses JIT compilation
-    root -= compiledF(new() { ["y"] = root }) / compiledDerivative(new() { ["y"] = root }); // this makes it fast in hot loops like this
-// passing in arguments is done in the same way as .At- dictionary of variable names to doubles
-Console.WriteLine("f(y) = " + f.ToLaTeX());
-Console.WriteLine(@"\frac{df}{dy} = " + dfdy.ToLaTeX());
-Console.WriteLine("root = " + root);
+KyaniteExpression L = Lambda_IJ[Omega_ijk][Omega_KLL];
+var el1 = L.PD(Theta_NA, thetaList).PD(x_a, list).Sub(subs).EvalPDs(list);
+var el2 = L.PD(Omega_NAB, omegaList).PD(x_a, list).PD(x_b, list).Sub(subs).EvalPDs(list);
+Console.WriteLine("L = " + L.Expand().ToLaTeX());
+Console.WriteLine("EL1 = " + el1.Expand().ToLaTeX());
+Console.WriteLine("EL2 = " + el2.Expand().ToLaTeX());

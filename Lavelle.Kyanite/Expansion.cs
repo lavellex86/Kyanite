@@ -38,7 +38,8 @@ namespace Lavelle.Kyanite
                 Cosh(var x) => x.ExpandOnce().Cosh(),
                 Tanh(var x) => x.ExpandOnce().Tanh(),
 
-                Derivative(var f, var x, _) => f.ExpandOnce().D(x),
+                Derivative(var f, var x, true) => new Derivative(f.ExpandOnce(), x, true),
+                Derivative(var f, var x, false) => f.ExpandOnce().D(x),
                 Integral(var f, var x) => f.ExpandOnce().Int(x),
 
                 var x => x
