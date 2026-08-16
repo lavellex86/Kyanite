@@ -9,3 +9,4 @@
 
 * [Complex Numbers](examples/complex-numbers.md)
 * [Tensor Calculus](examples/tensor-calculus.md)
+* [Functions](examples/functions.md)
