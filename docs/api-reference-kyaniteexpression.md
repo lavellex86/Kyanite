@@ -317,3 +317,11 @@ public static KyaniteExpression Swap(this KyaniteExpression expression, Func<Kya
 ```
 
 Swaps expressions using a predicate and swapper. When the predicate matches, the swapper will be run on the expression matched.
+
+***
+
+```csharp
+public static KyaniteExpression Walk(this KyaniteExpression expression, Func<KyaniteExpression, KyaniteExpression> function)
+```
+
+Walks the expression tree and applies a function.
