@@ -301,3 +301,11 @@ public static KyaniteExpression Expand(this KyaniteExpression expression)
 ```
 
 Expands an expression.
+
+***
+
+```csharp
+public static KyaniteExpression Apply(this KyaniteExpression expression, string name, Func<List<KyaniteExpression>, KyaniteExpression> rule)
+```
+
+Applies a rule to all functions with names containing `name`.

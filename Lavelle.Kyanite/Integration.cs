@@ -66,6 +66,8 @@ namespace Lavelle.Kyanite
             Integral(var f, var v) => v != x && f.IsConstant(x),
             Derivative(var f, var v, _) => v != x && f.IsConstant(x),
 
+            Function(_, var parameters) => parameters.All(y => y.IsConstant(x)),
+
             _ => false
         };
     }

@@ -71,5 +71,10 @@ namespace Lavelle.Kyanite
         /// Creates a new <c>Integral</c> expression.
         /// </summary>
         public static Integral Int(KyaniteExpression expression, Variable x) => new(expression, x);
+
+        /// <summary>
+        /// Creates a new <c>Function</c> expression.
+        /// </summary>
+        public static Function F(string name, List<KyaniteExpression> parameters) => new(name, parameters);
     }
 }

@@ -112,6 +112,9 @@ namespace Lavelle.Kyanite
                     f.FindVariables(indices);
                     x.FindVariables(indices);
                     break;
+                case Function(_, var parameters):
+                    foreach (var param in parameters) param.FindVariables(indices);
+                    break;
             }
         }
     }

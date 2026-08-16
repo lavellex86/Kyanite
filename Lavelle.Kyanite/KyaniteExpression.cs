@@ -201,4 +201,9 @@ namespace Lavelle.Kyanite
     /// Represents an integral.
     /// </summary>
     public record Integral(KyaniteExpression F, Variable X) : KyaniteExpression;
+
+    /// <summary>
+    /// Represents a function.
+    /// </summary>
+    public record Function(string Name, List<KyaniteExpression> Parameters) : KyaniteExpression;
 }

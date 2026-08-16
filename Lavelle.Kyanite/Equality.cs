@@ -31,6 +31,8 @@ namespace Lavelle.Kyanite
             (Derivative x, Derivative y) => SE(x.F, y.F) && SE(x.X, y.X) && x.Partial == y.Partial,
             (Integral x, Integral y) => SE(x.F, y.F) && SE(x.X, y.X),
 
+            (Function f, Function g) => f.Parameters.All(x => g.Parameters.Contains(x)) && f.Name == g.Name,
+
             _ => false
         };
 
@@ -52,6 +54,8 @@ namespace Lavelle.Kyanite
 
             Derivative(var f, var y, _) => f.Has(x) || y == x,
             Integral(var f, var y) => f.Has(x) || y == x,
+
+            Function f => f.Parameters.Contains(x),
 
             _ => false
         };

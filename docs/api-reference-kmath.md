@@ -119,3 +119,10 @@ public static Tanh Tanh(KyaniteExpression expression)
 ```
 
 Creates a new `Tanh` expression.
+
+***
+
+```csharp
+public static Function F(string name, List<KyaniteExpression> parameters)
+```
+Creates a new `Function` expression.
