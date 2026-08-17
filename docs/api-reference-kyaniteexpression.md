@@ -321,7 +321,15 @@ Swaps expressions using a predicate and swapper. When the predicate matches, the
 ***
 
 ```csharp
-public static KyaniteExpression Walk(this KyaniteExpression expression, Func<KyaniteExpression, KyaniteExpression> function)
+public static KyaniteExpression WalkDown(this KyaniteExpression expression, Func<KyaniteExpression, KyaniteExpression> function)
 ```
 
-Walks the expression tree and applies a function.
+Walks the expression tree downward and applies a function.
+
+***
+
+```csharp
+public static KyaniteExpression WalkUp(this KyaniteExpression expression, Func<KyaniteExpression, KyaniteExpression> function)
+```
+
+Walks the expression tree upward and applies a function.
