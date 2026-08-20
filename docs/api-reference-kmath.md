@@ -1,7 +1,7 @@
 # API Reference - KMath
 
 ```csharp
-public static partial class KMath
+public static class KMath
 ```
 
 Math utilities for Kyanite.
@@ -125,4 +125,5 @@ Creates a new `Tanh` expression.
 ```csharp
 public static Function F(string name, List<KyaniteExpression> parameters)
 ```
+
 Creates a new `Function` expression.

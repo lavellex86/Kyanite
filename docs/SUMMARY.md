@@ -3,6 +3,7 @@
 * [Getting Started](README.md)
 * [API Reference - KyaniteExpression](api-reference-kyaniteexpression.md)
 * [API Reference - Expression Types](api-reference-expression-types.md)
+* [API Reference - SEComparer](api-reference-secomparer.md)
 * [API Reference - KMath](api-reference-kmath.md)
 
 ## Examples
