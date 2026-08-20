@@ -333,3 +333,11 @@ public static KyaniteExpression WalkUp(this KyaniteExpression expression, Func<K
 ```
 
 Walks the expression tree upward and applies a function.
+
+***
+
+```csharp
+public static int Hash(this KyaniteExpression expression)
+```
+
+Semantic hashes the expression.

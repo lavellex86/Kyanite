@@ -29,7 +29,7 @@ namespace Lavelle.Kyanite
             Multiply(var a, var b) => P($@"{a.ToLaTeX(2)} {b.ToLaTeX(2)}", pred > 2),
 
             Pow(var x, Number(var e)) when e == 0.5 => $@"\sqrt{{ {x.ToLaTeX(0)} }}",
-            Pow(var x, Number(var e)) when e < 0 => $@"\frac{{ 1 }}{{ {P(x)}^{{ {N(e)} }} }}",
+            Pow(var x, Number(var e)) when e < 0 => $@"\frac{{ 1 }}{{ {P(x)}^{{ {(e == -1 ? "" : N(-e))} }} }}",
             Pow(var x, var e) => $"{P(x)}^{{ {e.ToLaTeX(0)} }}",
             Sin(var x) => $@"\sin \left( {x.ToLaTeX(0)} \right)",
             Cos(var x) => $@"\cos \left( {x.ToLaTeX(0)} \right)",
@@ -89,11 +89,7 @@ namespace Lavelle.Kyanite
 
             foreach (var prefix in prefixes)
             {
-                if (name.StartsWith(prefix))
-                {
-                    name = $@"\{prefix}{{{name[prefix.Length..]}}}";
-                    break;
-                }
+                if (name.StartsWith(prefix)) name = name.Insert(0, @"\");
             }
 
             var greeks = new Dictionary<string, string>
@@ -108,18 +104,12 @@ namespace Lavelle.Kyanite
                 {"zeta", @"\zeta"}, {"Pi", @"\Pi"}, {"Gamma", @"\Gamma"},
                 {"Delta", @"\Delta"},  {"Lambda", @"\Lambda"},
                 {"Sigma", @"\Sigma"}, {"Omega", @"\Omega"}, {"Phi", @"\Phi"},
-                {"Psi", @"\Psi"}, {"Xi", @"\Xi"}, {"Upsilon", @"\Upsilon"}
+                {"Psi", @"\Psi"}, {"Xi", @"\Xi"}, {"Upsilon", @"\Upsilon"},
+                { @"\Th\eta", @"\Theta" }, { @"\e\psilon", @"\epsilon"},
+                { @"kappa", @"\kappa" }
             };
 
-            var subscriptIndex = name.IndexOf('_');
-            var superscriptIndex = name.IndexOf('^');
-            var variable = name.Substring(0, superscriptIndex >= 0 ? superscriptIndex : name.Length);
-            variable = variable.Substring(0, subscriptIndex >= 0 ? subscriptIndex : variable.Length);
-
-            var bracketIndex = variable.IndexOf('{');
-            variable = variable[(bracketIndex >= 0 ? bracketIndex : 0)..].Replace("}", "");
-
-            if (greeks.TryGetValue(variable, out var escaped)) name = name.Replace(variable, escaped);
+            foreach (var (unescaped, escaped) in greeks) name = name.Replace(unescaped, escaped);
             return name;
         }
     }

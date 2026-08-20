@@ -129,6 +129,8 @@ namespace Lavelle.Kyanite
                 Add(Multiply(Number(2), Pow(Cosh(var x), Number(2))), Number(-1)) => (2 * x).Cosh(),
                 Add(Number(-1), Multiply(Number(2), Pow(Cosh(var x), Number(2)))) => (2 * x).Cosh(),
 
+                Derivative(Number _, Variable _, _) => 0,
+
                 var x => x
             };
 

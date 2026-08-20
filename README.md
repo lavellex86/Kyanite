@@ -84,4 +84,5 @@ Console.WriteLine("root = " + root);
 ```
 You can view Kyanite's docs [here](https://lavelle.gitbook.io/kyanite-documentation/).
 ## TODOs
+- `.Collapse` and factoring
 - Factoring

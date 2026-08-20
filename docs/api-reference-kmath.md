@@ -43,7 +43,7 @@ Creates a new symbolic `Derivative` expression.
 ***
 
 ```csharp
-public static Derivative PD(Variable f, Variable x)
+public static Derivative PD(KyaniteExpression f, Variable x)
 ```
 
 Creates a new symbolic partial `Derivative` expression.
